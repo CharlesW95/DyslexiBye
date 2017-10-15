@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="sSN-Os-BNe">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Test View Controller-->
+        <scene sceneID="BHc-l7-UO0">
+            <objects>
+                <viewController id="sSN-Os-BNe" customClass="TestViewController" customModule="DyslexiBye" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EWR-Lg-cWS">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Qf-YJ-p9d">
+                                <rect key="frame" x="20" y="587" width="335" height="30"/>
+                                <state key="normal" title="Upload"/>
+                                <connections>
+                                    <action selector="uploadPressed:" destination="sSN-Os-BNe" eventType="touchUpInside" id="HGb-Wk-kjJ"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Je9-Z9-WDE">
+                                <rect key="frame" x="20" y="35" width="335" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="fKY-rT-5fW"/>
+                                </constraints>
+                            </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="TEXT" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="hMi-RD-r1d">
+                                <rect key="frame" x="20" y="255" width="335" height="200"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="lx7-tU-pdu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xuh-m4-Kej" firstAttribute="trailing" secondItem="8Qf-YJ-p9d" secondAttribute="trailing" constant="20" id="2IX-7P-dul"/>
+                            <constraint firstItem="Je9-Z9-WDE" firstAttribute="top" secondItem="xuh-m4-Kej" secondAttribute="top" constant="15" id="6Bk-rq-jav"/>
+                            <constraint firstItem="xuh-m4-Kej" firstAttribute="bottom" secondItem="8Qf-YJ-p9d" secondAttribute="bottom" constant="50" id="DAV-BU-eyo"/>
+                            <constraint firstItem="8Qf-YJ-p9d" firstAttribute="leading" secondItem="xuh-m4-Kej" secondAttribute="leading" constant="20" id="GP6-7B-S8R"/>
+                            <constraint firstItem="xuh-m4-Kej" firstAttribute="trailing" secondItem="hMi-RD-r1d" secondAttribute="trailing" constant="20" id="JgL-ur-E7D"/>
+                            <constraint firstItem="Je9-Z9-WDE" firstAttribute="leading" secondItem="xuh-m4-Kej" secondAttribute="leading" constant="20" id="QMS-vU-LPM"/>
+                            <constraint firstItem="hMi-RD-r1d" firstAttribute="leading" secondItem="xuh-m4-Kej" secondAttribute="leading" constant="20" id="Tot-6v-wRg"/>
+                            <constraint firstItem="xuh-m4-Kej" firstAttribute="trailing" secondItem="Je9-Z9-WDE" secondAttribute="trailing" constant="20" id="YuF-Hv-HJr"/>
+                            <constraint firstItem="hMi-RD-r1d" firstAttribute="top" secondItem="Je9-Z9-WDE" secondAttribute="bottom" constant="20" id="oJI-hV-BwQ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="xuh-m4-Kej"/>
+                    </view>
+                    <connections>
+                        <outlet property="displayImageView" destination="Je9-Z9-WDE" id="ZL2-bq-DcT"/>
+                        <outlet property="displayTextView" destination="hMi-RD-r1d" id="p6k-0E-5Ug"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="voo-tA-l5r" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="314" y="662"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="tXr-a1-R10">
+            <objects>
+                <viewController id="BV1-FR-VrT" customClass="ViewController" customModule="DyslexiBye" customModuleProvider="target" sceneMemberID="viewController">
+                    <arscnView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="BrB-h1-WRS">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </arscnView>
+                    <connections>
+                        <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>

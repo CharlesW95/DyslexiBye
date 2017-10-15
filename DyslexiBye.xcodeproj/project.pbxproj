@@ -1,0 +1,442 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		49470E577D203570A43F857C /* Pods_DyslexiBye.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FBA26BCB22443E3A35C21AB /* Pods_DyslexiBye.framework */; };
+		56164C881F93D7D800B693F9 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56164C871F93D7D800B693F9 /* TestViewController.swift */; };
+		56164C8C1F93E9B100B693F9 /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 56164C8B1F93E9B100B693F9 /* tessdata */; };
+		565C452A1F83FD320012E13F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565C45291F83FD320012E13F /* AppDelegate.swift */; };
+		565C452C1F83FD320012E13F /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 565C452B1F83FD320012E13F /* art.scnassets */; };
+		565C452E1F83FD320012E13F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565C452D1F83FD320012E13F /* ViewController.swift */; };
+		565C45311F83FD320012E13F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 565C452F1F83FD320012E13F /* Main.storyboard */; };
+		565C45331F83FD320012E13F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 565C45321F83FD320012E13F /* Assets.xcassets */; };
+		565C45361F83FD320012E13F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 565C45341F83FD320012E13F /* LaunchScreen.storyboard */; };
+		568FB9F91F91194E006553D4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 568FB9F81F91194E006553D4 /* libz.tbd */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5607611C1F8D0541007A4821 /* DyslexiBye-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DyslexiBye-Bridging-Header.h"; sourceTree = "<group>"; };
+		560761201F8D064E007A4821 /* libTesseractOCRiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libTesseractOCRiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		56164C871F93D7D800B693F9 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		56164C8B1F93E9B100B693F9 /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
+		565C45261F83FD320012E13F /* DyslexiBye.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DyslexiBye.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		565C45291F83FD320012E13F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		565C452B1F83FD320012E13F /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
+		565C452D1F83FD320012E13F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		565C45301F83FD320012E13F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		565C45321F83FD320012E13F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		565C45351F83FD320012E13F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		565C45371F83FD320012E13F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		568FB9F81F91194E006553D4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		56F801B91F93EF9E00501D93 /* GPUImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GPUImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6009AAEDA4D1CFEE1AB30C2D /* Pods-DyslexiBye.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DyslexiBye.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DyslexiBye/Pods-DyslexiBye.debug.xcconfig"; sourceTree = "<group>"; };
+		9FBA26BCB22443E3A35C21AB /* Pods_DyslexiBye.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DyslexiBye.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9B2BEFF7FE6F270CB703C4C /* Pods-DyslexiBye.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DyslexiBye.release.xcconfig"; path = "Pods/Target Support Files/Pods-DyslexiBye/Pods-DyslexiBye.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		565C45231F83FD320012E13F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				568FB9F91F91194E006553D4 /* libz.tbd in Frameworks */,
+				49470E577D203570A43F857C /* Pods_DyslexiBye.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		565C451D1F83FD320012E13F = {
+			isa = PBXGroup;
+			children = (
+				565C45281F83FD320012E13F /* DyslexiBye */,
+				565C45271F83FD320012E13F /* Products */,
+				EB3BA775848794463AA6B669 /* Pods */,
+				BB45AE6D3421924F2F031C06 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		565C45271F83FD320012E13F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				565C45261F83FD320012E13F /* DyslexiBye.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		565C45281F83FD320012E13F /* DyslexiBye */ = {
+			isa = PBXGroup;
+			children = (
+				56164C8B1F93E9B100B693F9 /* tessdata */,
+				565C45291F83FD320012E13F /* AppDelegate.swift */,
+				5607611C1F8D0541007A4821 /* DyslexiBye-Bridging-Header.h */,
+				565C452B1F83FD320012E13F /* art.scnassets */,
+				565C452D1F83FD320012E13F /* ViewController.swift */,
+				565C452F1F83FD320012E13F /* Main.storyboard */,
+				565C45321F83FD320012E13F /* Assets.xcassets */,
+				565C45341F83FD320012E13F /* LaunchScreen.storyboard */,
+				565C45371F83FD320012E13F /* Info.plist */,
+				56164C871F93D7D800B693F9 /* TestViewController.swift */,
+			);
+			path = DyslexiBye;
+			sourceTree = "<group>";
+		};
+		BB45AE6D3421924F2F031C06 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				56F801B91F93EF9E00501D93 /* GPUImage.framework */,
+				568FB9F81F91194E006553D4 /* libz.tbd */,
+				560761201F8D064E007A4821 /* libTesseractOCRiOS.a */,
+				9FBA26BCB22443E3A35C21AB /* Pods_DyslexiBye.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EB3BA775848794463AA6B669 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6009AAEDA4D1CFEE1AB30C2D /* Pods-DyslexiBye.debug.xcconfig */,
+				E9B2BEFF7FE6F270CB703C4C /* Pods-DyslexiBye.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		565C45251F83FD320012E13F /* DyslexiBye */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 565C453A1F83FD320012E13F /* Build configuration list for PBXNativeTarget "DyslexiBye" */;
+			buildPhases = (
+				DDE45BF4C448D8E83E8CCA58 /* [CP] Check Pods Manifest.lock */,
+				565C45221F83FD320012E13F /* Sources */,
+				565C45231F83FD320012E13F /* Frameworks */,
+				565C45241F83FD320012E13F /* Resources */,
+				F1643F24A34DFC6B4A5AFFAF /* [CP] Embed Pods Frameworks */,
+				58C7D6D15CD3E41E8E3EF839 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DyslexiBye;
+			productName = DyslexiBye;
+			productReference = 565C45261F83FD320012E13F /* DyslexiBye.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		565C451E1F83FD320012E13F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0900;
+				LastUpgradeCheck = 0900;
+				ORGANIZATIONNAME = "Charles Wong";
+				TargetAttributes = {
+					565C45251F83FD320012E13F = {
+						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 565C45211F83FD320012E13F /* Build configuration list for PBXProject "DyslexiBye" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 565C451D1F83FD320012E13F;
+			productRefGroup = 565C45271F83FD320012E13F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				565C45251F83FD320012E13F /* DyslexiBye */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		565C45241F83FD320012E13F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				565C452C1F83FD320012E13F /* art.scnassets in Resources */,
+				565C45361F83FD320012E13F /* LaunchScreen.storyboard in Resources */,
+				56164C8C1F93E9B100B693F9 /* tessdata in Resources */,
+				565C45331F83FD320012E13F /* Assets.xcassets in Resources */,
+				565C45311F83FD320012E13F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		58C7D6D15CD3E41E8E3EF839 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DyslexiBye/Pods-DyslexiBye-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DDE45BF4C448D8E83E8CCA58 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DyslexiBye-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F1643F24A34DFC6B4A5AFFAF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-DyslexiBye/Pods-DyslexiBye-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GPUImage/GPUImage.framework",
+				"${BUILT_PRODUCTS_DIR}/TesseractOCRiOS/TesseractOCR.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GPUImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TesseractOCR.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DyslexiBye/Pods-DyslexiBye-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		565C45221F83FD320012E13F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				565C452E1F83FD320012E13F /* ViewController.swift in Sources */,
+				56164C881F93D7D800B693F9 /* TestViewController.swift in Sources */,
+				565C452A1F83FD320012E13F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		565C452F1F83FD320012E13F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				565C45301F83FD320012E13F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		565C45341F83FD320012E13F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				565C45351F83FD320012E13F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		565C45381F83FD320012E13F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		565C45391F83FD320012E13F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		565C453B1F83FD320012E13F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6009AAEDA4D1CFEE1AB30C2D /* Pods-DyslexiBye.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = FWP255DH69;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = DyslexiBye/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.charleswong.DyslexiBye;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "DyslexiBye/DyslexiBye-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		565C453C1F83FD320012E13F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E9B2BEFF7FE6F270CB703C4C /* Pods-DyslexiBye.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = FWP255DH69;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = DyslexiBye/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.charleswong.DyslexiBye;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "DyslexiBye/DyslexiBye-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		565C45211F83FD320012E13F /* Build configuration list for PBXProject "DyslexiBye" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				565C45381F83FD320012E13F /* Debug */,
+				565C45391F83FD320012E13F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		565C453A1F83FD320012E13F /* Build configuration list for PBXNativeTarget "DyslexiBye" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				565C453B1F83FD320012E13F /* Debug */,
+				565C453C1F83FD320012E13F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 565C451E1F83FD320012E13F /* Project object */;
+}
