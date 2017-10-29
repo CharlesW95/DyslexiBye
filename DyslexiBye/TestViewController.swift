@@ -8,8 +8,9 @@
 
 import UIKit
 import TesseractOCR
+import GPUImage
 
-class TestViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class TestViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, G8TesseractDelegate {
     
     @IBOutlet weak var displayImageView: UIImageView!
     @IBOutlet weak var displayTextView: UITextView!
@@ -70,6 +71,8 @@ class TestViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         return scaledImage!
     }
     
+    
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let selectedPhoto = info[UIImagePickerControllerOriginalImage] as! UIImage
         let scaledImage = scaleImage(image: selectedPhoto, maxDimension: 640)
@@ -94,11 +97,23 @@ class TestViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tesseract.recognize()
         // 7
         displayTextView.text = tesseract.recognizedText
+        
+        
         // displayTextView.editable = true
         
-        print("Done!")
+        print("Results are in!")
     }
     
+    // Tesseract Delegate Methods
+    // FIXME: Improve preprocessing
+//    func preprocessedImage(for tesseract: G8Tesseract!, sourceImage: UIImage!) -> UIImage! {
+//        print("This is being called")
+//        let input = sourceImage
+//        let stillImageFilter = GPUImage.AdaptiveThreshold()
+//        stillImageFilter.blurRadiusInPixels = 4.0
+//        let filteredImage = input?.filterWithOperation(stillImageFilter)
+//        return filteredImage!
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

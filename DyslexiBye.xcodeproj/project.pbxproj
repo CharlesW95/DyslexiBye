@@ -17,7 +17,61 @@
 		565C45331F83FD320012E13F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 565C45321F83FD320012E13F /* Assets.xcassets */; };
 		565C45361F83FD320012E13F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 565C45341F83FD320012E13F /* LaunchScreen.storyboard */; };
 		568FB9F91F91194E006553D4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 568FB9F81F91194E006553D4 /* libz.tbd */; };
+		56B753AA1FA6720700BFEE7F /* FocusAnimationBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B753A91FA6720700BFEE7F /* FocusAnimationBlock.swift */; };
+		56F801DA1F93F27C00501D93 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F801D51F93F25D00501D93 /* GPUImage.framework */; };
+		56F801DC1F93F2C700501D93 /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 56F801D51F93F25D00501D93 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		56F801D01F93F25D00501D93 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56F801C91F93F25D00501D93 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC6E7CAB1C39A9D8006DF678;
+			remoteInfo = GPUImage_macOS;
+		};
+		56F801D21F93F25D00501D93 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56F801C91F93F25D00501D93 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC6E7CB51C39A9D8006DF678;
+			remoteInfo = GPUImageTests_macOS;
+		};
+		56F801D41F93F25D00501D93 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56F801C91F93F25D00501D93 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC9E34E91E524A2200B8604F;
+			remoteInfo = GPUImage_iOS;
+		};
+		56F801D61F93F25D00501D93 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56F801C91F93F25D00501D93 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC9E34F11E524A2200B8604F;
+			remoteInfo = GPUImageTests_iOS;
+		};
+		56F801D81F93F27000501D93 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56F801C91F93F25D00501D93 /* GPUImage.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BC9E34E81E524A2200B8604F;
+			remoteInfo = GPUImage_iOS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		56F801DB1F93F2B000501D93 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				56F801DC1F93F2C700501D93 /* GPUImage.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5607611C1F8D0541007A4821 /* DyslexiBye-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DyslexiBye-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -33,7 +87,9 @@
 		565C45351F83FD320012E13F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		565C45371F83FD320012E13F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		568FB9F81F91194E006553D4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		56B753A91FA6720700BFEE7F /* FocusAnimationBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusAnimationBlock.swift; sourceTree = "<group>"; };
 		56F801B91F93EF9E00501D93 /* GPUImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GPUImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		56F801C91F93F25D00501D93 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = "../../../../Downloads/GPUImage2-master/framework/GPUImage.xcodeproj"; sourceTree = "<group>"; };
 		6009AAEDA4D1CFEE1AB30C2D /* Pods-DyslexiBye.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DyslexiBye.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DyslexiBye/Pods-DyslexiBye.debug.xcconfig"; sourceTree = "<group>"; };
 		9FBA26BCB22443E3A35C21AB /* Pods_DyslexiBye.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DyslexiBye.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9B2BEFF7FE6F270CB703C4C /* Pods-DyslexiBye.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DyslexiBye.release.xcconfig"; path = "Pods/Target Support Files/Pods-DyslexiBye/Pods-DyslexiBye.release.xcconfig"; sourceTree = "<group>"; };
@@ -44,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56F801DA1F93F27C00501D93 /* GPUImage.framework in Frameworks */,
 				568FB9F91F91194E006553D4 /* libz.tbd in Frameworks */,
 				49470E577D203570A43F857C /* Pods_DyslexiBye.framework in Frameworks */,
 			);
@@ -55,6 +112,7 @@
 		565C451D1F83FD320012E13F = {
 			isa = PBXGroup;
 			children = (
+				56F801C91F93F25D00501D93 /* GPUImage.xcodeproj */,
 				565C45281F83FD320012E13F /* DyslexiBye */,
 				565C45271F83FD320012E13F /* Products */,
 				EB3BA775848794463AA6B669 /* Pods */,
@@ -73,6 +131,7 @@
 		565C45281F83FD320012E13F /* DyslexiBye */ = {
 			isa = PBXGroup;
 			children = (
+				56B753A51FA6719900BFEE7F /* VisualElements */,
 				56164C8B1F93E9B100B693F9 /* tessdata */,
 				565C45291F83FD320012E13F /* AppDelegate.swift */,
 				5607611C1F8D0541007A4821 /* DyslexiBye-Bridging-Header.h */,
@@ -85,6 +144,25 @@
 				56164C871F93D7D800B693F9 /* TestViewController.swift */,
 			);
 			path = DyslexiBye;
+			sourceTree = "<group>";
+		};
+		56B753A51FA6719900BFEE7F /* VisualElements */ = {
+			isa = PBXGroup;
+			children = (
+				56B753A91FA6720700BFEE7F /* FocusAnimationBlock.swift */,
+			);
+			path = VisualElements;
+			sourceTree = "<group>";
+		};
+		56F801CA1F93F25D00501D93 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				56F801D11F93F25D00501D93 /* GPUImage.framework */,
+				56F801D31F93F25D00501D93 /* GPUImageTests_macOS.xctest */,
+				56F801D51F93F25D00501D93 /* GPUImage.framework */,
+				56F801D71F93F25D00501D93 /* GPUImageTests_iOS.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		BB45AE6D3421924F2F031C06 /* Frameworks */ = {
@@ -120,10 +198,12 @@
 				565C45241F83FD320012E13F /* Resources */,
 				F1643F24A34DFC6B4A5AFFAF /* [CP] Embed Pods Frameworks */,
 				58C7D6D15CD3E41E8E3EF839 /* [CP] Copy Pods Resources */,
+				56F801DB1F93F2B000501D93 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				56F801D91F93F27000501D93 /* PBXTargetDependency */,
 			);
 			name = DyslexiBye;
 			productName = DyslexiBye;
@@ -158,12 +238,49 @@
 			mainGroup = 565C451D1F83FD320012E13F;
 			productRefGroup = 565C45271F83FD320012E13F /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 56F801CA1F93F25D00501D93 /* Products */;
+					ProjectRef = 56F801C91F93F25D00501D93 /* GPUImage.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				565C45251F83FD320012E13F /* DyslexiBye */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		56F801D11F93F25D00501D93 /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = 56F801D01F93F25D00501D93 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		56F801D31F93F25D00501D93 /* GPUImageTests_macOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GPUImageTests_macOS.xctest;
+			remoteRef = 56F801D21F93F25D00501D93 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		56F801D51F93F25D00501D93 /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = 56F801D41F93F25D00501D93 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		56F801D71F93F25D00501D93 /* GPUImageTests_iOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GPUImageTests_iOS.xctest;
+			remoteRef = 56F801D61F93F25D00501D93 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		565C45241F83FD320012E13F /* Resources */ = {
@@ -221,12 +338,10 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-DyslexiBye/Pods-DyslexiBye-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/GPUImage/GPUImage.framework",
 				"${BUILT_PRODUCTS_DIR}/TesseractOCRiOS/TesseractOCR.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GPUImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TesseractOCR.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -244,10 +359,19 @@
 				565C452E1F83FD320012E13F /* ViewController.swift in Sources */,
 				56164C881F93D7D800B693F9 /* TestViewController.swift in Sources */,
 				565C452A1F83FD320012E13F /* AppDelegate.swift in Sources */,
+				56B753AA1FA6720700BFEE7F /* FocusAnimationBlock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		56F801D91F93F27000501D93 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GPUImage_iOS;
+			targetProxy = 56F801D81F93F27000501D93 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		565C452F1F83FD320012E13F /* Main.storyboard */ = {
