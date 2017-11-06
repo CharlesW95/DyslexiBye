@@ -11,6 +11,7 @@ import SceneKit
 import ARKit
 import AVFoundation
 import TesseractOCR
+import GPUImage
 
 class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, AVCapturePhotoCaptureDelegate {
     
@@ -208,14 +209,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         let newCropRectangle = CGRect(x: self.cropRectangle.minY, y: self.cropRectangle.minX, width: self.cropRectangle.height, height: self.cropRectangle.width)
         let croppedImage = image.crop(rect: newCropRectangle, scaleFactor: scaleFactor)
         
+        
+        
+        
+        
         // Preview the images
         let newImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 300, height: 500))
         newImageView.contentMode = .scaleAspectFit
         newImageView.image = croppedImage
         self.view.addSubview(newImageView)
         
-        // Process photo for Tesseract
-        var processedImage = croppedImage
+        
+        
         
         // Feed it into Tesseract and extract text
         tesseract.image = croppedImage
@@ -240,29 +245,33 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         sceneView.session.run(self.configuration)
         print("We have returned to ARKit")
         
+        
+        
         // Calculate average coordinates/dimensions
         
         // Project back into 3D space
     }
-   
     
-    
-    // Takes a camera image and returns it
-//    func takePhoto() -> UIImage? {
-//        if let pixelBuffer = sceneView.session.currentFrame?.capturedImage {
-//            let extractedImage = CIImage(cvPixelBuffer: pixelBuffer)
-//            let tempContext = CIContext()
-//            if let videoImage = tempContext.createCGImage(extractedImage,
-//                                                       from: CGRect(x: 0, y: 0,
-//                                                                    width: CVPixelBufferGetWidth(pixelBuffer),
-//                                                                    height: CVPixelBufferGetHeight(pixelBuffer))) {
-//                print("Success")
-//                return UIImage(cgImage: videoImage)
-//            }
-//        }
-//
-//        return nil
-//    }
+    func preprocessedImage(for tesseract: G8Tesseract!, sourceImage: UIImage!) -> UIImage! {
+        // Process photo for Tesseract
+        let stillImageFilter = AdaptiveThreshold()
+        stillImageFilter.blurRadiusInPixels = 4.0
+        var processedImage = sourceImage.filterWithPipeline { input, output in
+            input --> stillImageFilter --> output
+        }
+        processedImage = UIImage(cgImage: processedImage.cgImage!, scale: 1.0, orientation: sourceImage.imageOrientation)
+        
+        print("Size comparison:")
+        print(sourceImage.size)
+        print(processedImage.size)
+        
+        let iv = UIImageView(frame: CGRect(x: 0, y: 300, width: 300, height: 500))
+        iv.contentMode = .scaleAspectFit
+        iv.image = processedImage
+        self.view.addSubview(iv)
+        
+        return processedImage
+    }
     
     @IBOutlet var sceneView: ARSCNView!
 

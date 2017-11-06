@@ -22,7 +22,7 @@ class ImageCaptureBlock: UIView {
     }
     
     func configureAppearance() {
-        self.backgroundColor = UIColor.purple
+        self.backgroundColor = UIColor.yellow
         self.alpha = 0.25
     }
     
