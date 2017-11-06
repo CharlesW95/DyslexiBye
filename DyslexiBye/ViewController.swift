@@ -12,86 +12,145 @@ import ARKit
 import AVFoundation
 import TesseractOCR
 
-class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate {
+class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, AVCapturePhotoCaptureDelegate {
     
     // App State
     var firing = false
     var focusCounter = 0
     
-    // AVFoundation Variables
-    var captureSession: AVCaptureSession?
-    var videoPreviewLayer: AVCaptureVideoPreviewLayer?
+    // AVCaptureSession Variables
+    var captureSession: AVCaptureSession!
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer!
+    var stillImageOutput: AVCapturePhotoOutput!
+    var cropRectangle: CGRect!
+    
+    // Custom Visual Elements
+    var focusAnimationBlock: FocusAnimationBlock?
+    var imageCaptureBlock: ImageCaptureBlock?
+    
+    // Tesseract Variables
+    var tesseract: G8Tesseract!
+    
+    // ARKit Variables
+    var configuration: ARWorldTrackingConfiguration!
     
     @IBOutlet weak var displayImageView: UIImageView!
-    @IBAction func longPressed(_ sender: UILongPressGestureRecognizer) {
-        if sender.state == .began {
-            
-            // Hide the sceneView temporarily
-            sceneView.session.pause() // Pause the ARSession
-            
-            // Set up ARCaptureSession
-            let captureDevice = AVCaptureDevice.default(for: .video)
-            
-            do {
-                let input = try AVCaptureDeviceInput(device: captureDevice!)
-                captureSession = AVCaptureSession()
-                captureSession?.addInput(input)
-                videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession!)
-                videoPreviewLayer?.videoGravity = .resizeAspectFill
-                videoPreviewLayer?.frame = self.view.layer.bounds
-                print("Starting process...")
-                captureSession?.startRunning()
+    
+    @IBAction func panGestureRecognized(_ sender: Any) {
+        let sender = sender as! UIPanGestureRecognizer
+        switch (sender.state) {
+            case .began:
+                print("BEGAN")
                 
-                // Show the preview of the AVCaptureSession (ARKit layer is still in the background)
-                self.view.layer.addSublayer(videoPreviewLayer!)
+                print(sender.location(in: self.view))
                 
-                // Focus on the provided coordinate (show focus animation)
-                let tapLocation = sender.location(in: self.view)
-                // Programatically focus on point in image
-                if let device = captureDevice {
-                    if device.isFocusPointOfInterestSupported && device.isFocusModeSupported(.autoFocus) {
-                        try device.lockForConfiguration()
-                        
-                        let screenSize = UIScreen.main.bounds.size
-                        let focus_x = tapLocation.x / screenSize.width
-                        let focus_y = tapLocation.y / screenSize.height
-                        let focusPoint = CGPoint(x: focus_x, y: focus_y)
-                        print(focusPoint)
-                        device.focusPointOfInterest = focusPoint
-                        // device.focusMode = .continuousAutoFocus
-                        device.focusMode = .autoFocus
-                        // device.focusMode = .locked
-                        device.exposurePointOfInterest = focusPoint
-                        device.exposureMode = .continuousAutoExposure
-                        device.addObserver(self, forKeyPath: "adjustingFocus", options: NSKeyValueObservingOptions.new, context: nil)
-                        device.unlockForConfiguration()
+                // Initialize the ImageCaptureBlock
+                self.imageCaptureBlock = ImageCaptureBlock(startingPoint: sender.location(in: self.view))
+                self.view.addSubview(self.imageCaptureBlock!)
+            case .changed:
+                // Change the size of the box
+                let newPoint = sender.translation(in: self.view)
+                self.imageCaptureBlock?.updateFrame(newPoint: newPoint)
+            case .ended:
+                // Check to see if there is a proper area
+                if let captureBlock = self.imageCaptureBlock {
+                    removeImageCaptureBlock()
+                    if captureBlock.validAreaCaptured() {
+                        print("Valid area identified")
+                        // Start image capture
+                        self.cropRectangle = captureBlock.returnFrame()
+                        startImageFocus(center: captureBlock.returnCenter())
+                    } else {
+                        print("Nada")
                     }
                 }
-                
-                // Show focus animation
-                
-                
-                // Capture the image
-                
-                // Feed it into Tesseract and extract text
-                
-                // Extract coordinates of text
-                
-                // Bring back sceneView
-                
-                // Calculate average coordinates/dimensions
-                
-                // Project back into 3D space
-                
-            } catch {
-                print(error)
+            
+            default:
+                print("OK")
+        }
+    }
+    
+    
+    
+    
+    func startImageFocus(center: CGPoint) {
+        // Hide the sceneView temporarily
+        sceneView.session.pause() // Pause the ARSession
+        // Set up ARCaptureSession
+        let captureDevice = AVCaptureDevice.default(for: .video)
+        
+        do {
+            // Input setup
+            let input = try AVCaptureDeviceInput(device: captureDevice!)
+            captureSession = AVCaptureSession()
+            captureSession.addInput(input)
+            
+            
+            // Output setup
+            self.stillImageOutput = AVCapturePhotoOutput()
+            if captureSession.canAddOutput(stillImageOutput) {
+                captureSession.addOutput(stillImageOutput)
             }
             
+            videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession!)
+            videoPreviewLayer?.videoGravity = .resizeAspectFill
+            videoPreviewLayer?.frame = self.view.layer.bounds
+            print("Starting process...")
+            captureSession.startRunning()
             
+            // Show the preview of the AVCaptureSession (ARKit layer is still in the background)
+            self.view.layer.addSublayer(videoPreviewLayer!)
             
+            // Focus on the provided coordinate (show focus animation)
+            // Programatically focus on point in image
+            if let device = captureDevice {
+                if device.isFocusPointOfInterestSupported && device.isFocusModeSupported(.autoFocus) {
+                    try device.lockForConfiguration()
+                    let screenSize = UIScreen.main.bounds.size
+                    let focus_x = center.x / screenSize.width
+                    let focus_y = center.y / screenSize.height
+                    let focusPoint = CGPoint(x: focus_x, y: focus_y)
+                    device.focusPointOfInterest = focusPoint
+                    // device.focusMode = .continuousAutoFocus
+                    device.focusMode = .autoFocus
+                    // device.focusMode = .locked
+                    device.exposurePointOfInterest = focusPoint
+                    device.exposureMode = .continuousAutoExposure
+                    device.addObserver(self, forKeyPath: "adjustingFocus", options: NSKeyValueObservingOptions.new, context: nil)
+                    device.unlockForConfiguration()
+                }
+            }
             
+            // Show focus animation
+            addFocusAnimation(tapLocation: center)
+            
+        } catch {
+            print(error)
         }
-        
+    }
+    
+    
+    func finishedFocusing() {
+        self.removeFocusAnimation()
+        // Capture the image
+        takePhoto()
+    }
+    
+    func addFocusAnimation(tapLocation: CGPoint) {
+        self.focusAnimationBlock = FocusAnimationBlock(tapLocation: tapLocation)
+        self.view.addSubview(focusAnimationBlock!)
+    }
+    
+    func removeFocusAnimation() {
+        if let animationBlock = self.focusAnimationBlock {
+            animationBlock.removeFromSuperview()
+            self.focusAnimationBlock = nil
+        }
+    }
+    
+    func removeImageCaptureBlock() {
+        self.imageCaptureBlock?.removeFromSuperview()
+        self.imageCaptureBlock = nil
     }
     
     @IBAction func firePressed(_ sender: Any) {
@@ -99,11 +158,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate {
             // Take photo and start image recognition process.
             firing = true
             
-            
-            
-            if let capturedPhoto = takePhoto() {
-                displayImageView.image = capturedPhoto
-            }
+//            if let capturedPhoto = takePhoto() {
+//                displayImageView.image = capturedPhoto
+//            }
             firing = false
         }
     }
@@ -117,7 +174,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate {
                     if newVal == 0 {
                         focusCounter += 1
                         if focusCounter == 2 {
-                            print("Job done")
+                            self.finishedFocusing()
                             focusCounter = 0
                         }
                     }
@@ -126,23 +183,86 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate {
         }
     }
     
+    // New take photo function uses AVCaptureSession
+    func takePhoto() {
+        if let videoConnection = stillImageOutput.connection(with: .video) {
+            let photoSettings = AVCapturePhotoSettings()
+            photoSettings.flashMode = .off
+            
+            stillImageOutput.capturePhoto(with: photoSettings, delegate: self)
+        }
+    }
     
-    // Takes a camera image and returns it
-    func takePhoto() -> UIImage? {
-        if let pixelBuffer = sceneView.session.currentFrame?.capturedImage {
-            let extractedImage = CIImage(cvPixelBuffer: pixelBuffer)
-            let tempContext = CIContext()
-            if let videoImage = tempContext.createCGImage(extractedImage,
-                                                       from: CGRect(x: 0, y: 0,
-                                                                    width: CVPixelBufferGetWidth(pixelBuffer),
-                                                                    height: CVPixelBufferGetHeight(pixelBuffer))) {
-                print("Success")
-                return UIImage(cgImage: videoImage)
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        if let data = photo.fileDataRepresentation() {
+            if let image = UIImage(data: data) {
+                photoTaken(image: image)
             }
         }
-        
-        return nil
     }
+    
+    func photoTaken(image: UIImage) {
+        // Crop photo based on specified frame
+        let scaleFactor = image.size.width / UIScreen.main.bounds.width
+        // Invert x and y co-ordinates because of iOS bug?
+        let newCropRectangle = CGRect(x: self.cropRectangle.minY, y: self.cropRectangle.minX, width: self.cropRectangle.height, height: self.cropRectangle.width)
+        let croppedImage = image.crop(rect: newCropRectangle, scaleFactor: scaleFactor)
+        
+        // Preview the images
+        let newImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 300, height: 500))
+        newImageView.contentMode = .scaleAspectFit
+        newImageView.image = croppedImage
+        self.view.addSubview(newImageView)
+        
+        // Process photo for Tesseract
+        var processedImage = croppedImage
+        
+        // Feed it into Tesseract and extract text
+        tesseract.image = croppedImage
+        tesseract.recognize()
+        
+        print(tesseract.recognizedText)
+        print("Recognition Complete")
+        // Extract coordinates of text
+        
+        
+        
+//        let tv = UITextView(frame: CGRect(x: 0, y: 0, width: 250, height: 400))
+//        tv.text = tesseract.recognizedText
+//        tv.textColor = UIColor.white
+//        tv.backgroundColor = UIColor.black
+//        self.view.addSubview(tv)
+        
+        // Bring back sceneView
+        
+        videoPreviewLayer.removeFromSuperlayer()
+        captureSession.stopRunning()
+        sceneView.session.run(self.configuration)
+        print("We have returned to ARKit")
+        
+        // Calculate average coordinates/dimensions
+        
+        // Project back into 3D space
+    }
+   
+    
+    
+    // Takes a camera image and returns it
+//    func takePhoto() -> UIImage? {
+//        if let pixelBuffer = sceneView.session.currentFrame?.capturedImage {
+//            let extractedImage = CIImage(cvPixelBuffer: pixelBuffer)
+//            let tempContext = CIContext()
+//            if let videoImage = tempContext.createCGImage(extractedImage,
+//                                                       from: CGRect(x: 0, y: 0,
+//                                                                    width: CVPixelBufferGetWidth(pixelBuffer),
+//                                                                    height: CVPixelBufferGetHeight(pixelBuffer))) {
+//                print("Success")
+//                return UIImage(cgImage: videoImage)
+//            }
+//        }
+//
+//        return nil
+//    }
     
     @IBOutlet var sceneView: ARSCNView!
 
@@ -156,14 +276,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate {
         sceneView.showsStatistics = true
         
         // Test Tesseract Library
-        let tesseract:G8Tesseract = G8Tesseract(language:"eng")
+        self.tesseract = G8Tesseract(language:"eng")
         tesseract.delegate = self
         
         tesseract.engineMode = .tesseractCubeCombined
         
         tesseract.pageSegmentationMode = .auto
-        // tesseract.charWhitelist = "abcdefghijklmnopqrstuvwxyz012345789"
-
+        tesseract.charWhitelist = "abcdefghijklmnopqrstuvwxyz012345789()//.,:;"
 
         // Create a new scene
         // let scene = SCNScene(named: "art.scnassets/ship.scn")!
@@ -180,10 +299,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate {
         super.viewWillAppear(animated)
         
         // Create a session configuration
-        let configuration = ARWorldTrackingConfiguration()
+        self.configuration = ARWorldTrackingConfiguration()
 
         // Run the view's session
-        sceneView.session.run(configuration)
+        sceneView.session.run(self.configuration)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

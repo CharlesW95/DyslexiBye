@@ -16,6 +16,8 @@
 		565C45311F83FD320012E13F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 565C452F1F83FD320012E13F /* Main.storyboard */; };
 		565C45331F83FD320012E13F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 565C45321F83FD320012E13F /* Assets.xcassets */; };
 		565C45361F83FD320012E13F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 565C45341F83FD320012E13F /* LaunchScreen.storyboard */; };
+		568CC6771FAFE93C00393411 /* ImageCaptureBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568CC6761FAFE93C00393411 /* ImageCaptureBlock.swift */; };
+		568CC6791FAFF8D800393411 /* CropImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568CC6781FAFF8D800393411 /* CropImage.swift */; };
 		568FB9F91F91194E006553D4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 568FB9F81F91194E006553D4 /* libz.tbd */; };
 		56B753AA1FA6720700BFEE7F /* FocusAnimationBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B753A91FA6720700BFEE7F /* FocusAnimationBlock.swift */; };
 		56F801DA1F93F27C00501D93 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F801D51F93F25D00501D93 /* GPUImage.framework */; };
@@ -86,6 +88,8 @@
 		565C45321F83FD320012E13F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		565C45351F83FD320012E13F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		565C45371F83FD320012E13F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		568CC6761FAFE93C00393411 /* ImageCaptureBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCaptureBlock.swift; sourceTree = "<group>"; };
+		568CC6781FAFF8D800393411 /* CropImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropImage.swift; sourceTree = "<group>"; };
 		568FB9F81F91194E006553D4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		56B753A91FA6720700BFEE7F /* FocusAnimationBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusAnimationBlock.swift; sourceTree = "<group>"; };
 		56F801B91F93EF9E00501D93 /* GPUImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GPUImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -142,6 +146,7 @@
 				565C45341F83FD320012E13F /* LaunchScreen.storyboard */,
 				565C45371F83FD320012E13F /* Info.plist */,
 				56164C871F93D7D800B693F9 /* TestViewController.swift */,
+				568CC6781FAFF8D800393411 /* CropImage.swift */,
 			);
 			path = DyslexiBye;
 			sourceTree = "<group>";
@@ -150,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				56B753A91FA6720700BFEE7F /* FocusAnimationBlock.swift */,
+				568CC6761FAFE93C00393411 /* ImageCaptureBlock.swift */,
 			);
 			path = VisualElements;
 			sourceTree = "<group>";
@@ -359,7 +365,9 @@
 				565C452E1F83FD320012E13F /* ViewController.swift in Sources */,
 				56164C881F93D7D800B693F9 /* TestViewController.swift in Sources */,
 				565C452A1F83FD320012E13F /* AppDelegate.swift in Sources */,
+				568CC6791FAFF8D800393411 /* CropImage.swift in Sources */,
 				56B753AA1FA6720700BFEE7F /* FocusAnimationBlock.swift in Sources */,
+				568CC6771FAFE93C00393411 /* ImageCaptureBlock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -506,6 +514,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FWP255DH69;
 				ENABLE_BITCODE = NO;
@@ -513,10 +522,12 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.charleswong.DyslexiBye;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "DyslexiBye/DyslexiBye-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -526,6 +537,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FWP255DH69;
 				ENABLE_BITCODE = NO;
@@ -533,9 +545,11 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.charleswong.DyslexiBye;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "DyslexiBye/DyslexiBye-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

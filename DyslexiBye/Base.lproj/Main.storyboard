@@ -75,7 +75,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <gestureRecognizers/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="ECT-dV-l57" appends="YES" id="Qy3-d3-NiH"/>
+                                    <outletCollection property="gestureRecognizers" destination="f4b-Uc-PTJ" appends="YES" id="Dnj-2k-ZR1"/>
                                 </connections>
                             </arscnView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rgz-g5-LMn">
@@ -128,11 +128,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="ECT-dV-l57">
+                <panGestureRecognizer minimumNumberOfTouches="1" id="f4b-Uc-PTJ">
                     <connections>
-                        <action selector="longPressed:" destination="BV1-FR-VrT" id="9Mw-pa-eow"/>
+                        <action selector="panGestureRecognized:" destination="BV1-FR-VrT" id="ltU-Y9-NAd"/>
                     </connections>
-                </pongPressGestureRecognizer>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="421.60000000000002" y="21.139430284857571"/>
         </scene>
