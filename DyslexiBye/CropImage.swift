@@ -22,14 +22,21 @@ extension UIImage {
         return result;
     }
     
+    private func scaleRect(originalRect: CGRect, scale: CGFloat) -> CGRect {
+        var newRect = originalRect
+        newRect.origin.x *= scale
+        newRect.origin.y *= scale
+        newRect.size.width *= scale
+        newRect.size.height *= scale
+        
+        return newRect
+    }
+    
     // Crops an input image (self) to a specified rect
     func crop(rect: CGRect, scaleFactor: CGFloat = 1.0) -> UIImage {
-        var newRect = rect
-        newRect.origin.x *= scaleFactor
-        newRect.origin.y *= scaleFactor
-        newRect.size.width *= scaleFactor
-        newRect.size.height *= scaleFactor
-
+        // Try alternative
+        // var altRect = CGRect(x: 0, y: 0, width: 150, height: 250)
+        let newRect = scaleRect(originalRect: rect, scale: scaleFactor)
         let imageRef = self.cgImage!.cropping(to: newRect)
         let image = UIImage(cgImage: imageRef!, scale: self.scale, orientation: self.imageOrientation)
         return image

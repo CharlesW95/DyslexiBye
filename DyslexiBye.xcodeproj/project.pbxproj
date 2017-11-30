@@ -16,10 +16,13 @@
 		565C45311F83FD320012E13F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 565C452F1F83FD320012E13F /* Main.storyboard */; };
 		565C45331F83FD320012E13F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 565C45321F83FD320012E13F /* Assets.xcassets */; };
 		565C45361F83FD320012E13F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 565C45341F83FD320012E13F /* LaunchScreen.storyboard */; };
+		567B52C71FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B52C61FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift */; };
+		567B52CC1FBA8D72006CDB21 /* ARKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B52CB1FBA8D72006CDB21 /* ARKitHelper.swift */; };
 		568CC6771FAFE93C00393411 /* ImageCaptureBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568CC6761FAFE93C00393411 /* ImageCaptureBlock.swift */; };
 		568CC6791FAFF8D800393411 /* CropImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568CC6781FAFF8D800393411 /* CropImage.swift */; };
 		568FB9F91F91194E006553D4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 568FB9F81F91194E006553D4 /* libz.tbd */; };
 		56B753AA1FA6720700BFEE7F /* FocusAnimationBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B753A91FA6720700BFEE7F /* FocusAnimationBlock.swift */; };
+		56C4572F1FCD12C5005DDDBE /* Dyslexie_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56C4572E1FCD12A5005DDDBE /* Dyslexie_Regular.ttf */; };
 		56F801DA1F93F27C00501D93 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F801D51F93F25D00501D93 /* GPUImage.framework */; };
 		56F801DC1F93F2C700501D93 /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 56F801D51F93F25D00501D93 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -88,10 +91,13 @@
 		565C45321F83FD320012E13F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		565C45351F83FD320012E13F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		565C45371F83FD320012E13F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		567B52C61FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TesseractDimensionsHelper.swift; sourceTree = "<group>"; };
+		567B52CB1FBA8D72006CDB21 /* ARKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARKitHelper.swift; sourceTree = "<group>"; };
 		568CC6761FAFE93C00393411 /* ImageCaptureBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCaptureBlock.swift; sourceTree = "<group>"; };
 		568CC6781FAFF8D800393411 /* CropImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropImage.swift; sourceTree = "<group>"; };
 		568FB9F81F91194E006553D4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		56B753A91FA6720700BFEE7F /* FocusAnimationBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusAnimationBlock.swift; sourceTree = "<group>"; };
+		56C4572E1FCD12A5005DDDBE /* Dyslexie_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Dyslexie_Regular.ttf; sourceTree = "<group>"; };
 		56F801B91F93EF9E00501D93 /* GPUImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GPUImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		56F801C91F93F25D00501D93 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = "../../../../Downloads/GPUImage2-master/framework/GPUImage.xcodeproj"; sourceTree = "<group>"; };
 		6009AAEDA4D1CFEE1AB30C2D /* Pods-DyslexiBye.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DyslexiBye.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DyslexiBye/Pods-DyslexiBye.debug.xcconfig"; sourceTree = "<group>"; };
@@ -135,6 +141,7 @@
 		565C45281F83FD320012E13F /* DyslexiBye */ = {
 			isa = PBXGroup;
 			children = (
+				56C457281FCD1292005DDDBE /* Resources */,
 				56B753A51FA6719900BFEE7F /* VisualElements */,
 				56164C8B1F93E9B100B693F9 /* tessdata */,
 				565C45291F83FD320012E13F /* AppDelegate.swift */,
@@ -147,6 +154,8 @@
 				565C45371F83FD320012E13F /* Info.plist */,
 				56164C871F93D7D800B693F9 /* TestViewController.swift */,
 				568CC6781FAFF8D800393411 /* CropImage.swift */,
+				567B52C61FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift */,
+				567B52CB1FBA8D72006CDB21 /* ARKitHelper.swift */,
 			);
 			path = DyslexiBye;
 			sourceTree = "<group>";
@@ -158,6 +167,14 @@
 				568CC6761FAFE93C00393411 /* ImageCaptureBlock.swift */,
 			);
 			path = VisualElements;
+			sourceTree = "<group>";
+		};
+		56C457281FCD1292005DDDBE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				56C4572E1FCD12A5005DDDBE /* Dyslexie_Regular.ttf */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		56F801CA1F93F25D00501D93 /* Products */ = {
@@ -295,6 +312,7 @@
 			files = (
 				565C452C1F83FD320012E13F /* art.scnassets in Resources */,
 				565C45361F83FD320012E13F /* LaunchScreen.storyboard in Resources */,
+				56C4572F1FCD12C5005DDDBE /* Dyslexie_Regular.ttf in Resources */,
 				56164C8C1F93E9B100B693F9 /* tessdata in Resources */,
 				565C45331F83FD320012E13F /* Assets.xcassets in Resources */,
 				565C45311F83FD320012E13F /* Main.storyboard in Resources */,
@@ -366,8 +384,10 @@
 				56164C881F93D7D800B693F9 /* TestViewController.swift in Sources */,
 				565C452A1F83FD320012E13F /* AppDelegate.swift in Sources */,
 				568CC6791FAFF8D800393411 /* CropImage.swift in Sources */,
+				567B52C71FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift in Sources */,
 				56B753AA1FA6720700BFEE7F /* FocusAnimationBlock.swift in Sources */,
 				568CC6771FAFE93C00393411 /* ImageCaptureBlock.swift in Sources */,
+				567B52CC1FBA8D72006CDB21 /* ARKitHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

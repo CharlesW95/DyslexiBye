@@ -83,7 +83,7 @@
                         <constraints>
                             <constraint firstItem="zhW-av-hws" firstAttribute="leading" secondItem="3cr-lW-U4n" secondAttribute="leading" id="0FV-FJ-saw"/>
                             <constraint firstItem="3cr-lW-U4n" firstAttribute="trailing" secondItem="zhW-av-hws" secondAttribute="trailing" id="dg6-Zl-fy4"/>
-                            <constraint firstItem="3cr-lW-U4n" firstAttribute="bottom" secondItem="zhW-av-hws" secondAttribute="bottom" id="lgH-pg-WhA"/>
+                            <constraint firstAttribute="bottom" secondItem="zhW-av-hws" secondAttribute="bottom" id="lgH-pg-WhA"/>
                             <constraint firstItem="zhW-av-hws" firstAttribute="top" secondItem="su9-bz-COf" secondAttribute="top" id="sV4-z2-3oR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="3cr-lW-U4n"/>

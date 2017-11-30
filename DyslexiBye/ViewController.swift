@@ -29,11 +29,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
     var focusAnimationBlock: FocusAnimationBlock?
     var imageCaptureBlock: ImageCaptureBlock?
     
+    var tesseractTextView: UITextView?
+    var originalImageView: UIImageView?
+    var processedImageView: UIImageView?
+    
     // Tesseract Variables
     var tesseract: G8Tesseract!
     
     // ARKit Variables
     var configuration: ARWorldTrackingConfiguration!
+    var arHelper: ARKitHelper!
+    
+    var latestPlaneCorners = [ARHitTestResult]()
     
     @IBOutlet weak var displayImageView: UIImageView!
     
@@ -41,10 +48,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         let sender = sender as! UIPanGestureRecognizer
         switch (sender.state) {
             case .began:
-                print("BEGAN")
-                
+                print("This is the starting location")
                 print(sender.location(in: self.view))
-                
                 // Initialize the ImageCaptureBlock
                 self.imageCaptureBlock = ImageCaptureBlock(startingPoint: sender.location(in: self.view))
                 self.view.addSubview(self.imageCaptureBlock!)
@@ -57,22 +62,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
                 if let captureBlock = self.imageCaptureBlock {
                     removeImageCaptureBlock()
                     if captureBlock.validAreaCaptured() {
-                        print("Valid area identified")
                         // Start image capture
                         self.cropRectangle = captureBlock.returnFrame()
+                        arHelper.populateFeaturePoints(rect: self.cropRectangle)
                         startImageFocus(center: captureBlock.returnCenter())
                     } else {
-                        print("Nada")
+                        print("Area was invalid for photo capture.")
                     }
                 }
-            
             default:
-                print("OK")
+                print("Unexpected case found.")
         }
     }
-    
-    
-    
     
     func startImageFocus(center: CGPoint) {
         // Hide the sceneView temporarily
@@ -85,7 +86,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
             let input = try AVCaptureDeviceInput(device: captureDevice!)
             captureSession = AVCaptureSession()
             captureSession.addInput(input)
-            
             
             // Output setup
             self.stillImageOutput = AVCapturePhotoOutput()
@@ -124,12 +124,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
             
             // Show focus animation
             addFocusAnimation(tapLocation: center)
-            
         } catch {
             print(error)
         }
     }
-    
     
     func finishedFocusing() {
         self.removeFocusAnimation()
@@ -154,19 +152,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         self.imageCaptureBlock = nil
     }
     
-    @IBAction func firePressed(_ sender: Any) {
-        if !firing {
-            // Take photo and start image recognition process.
-            firing = true
-            
-//            if let capturedPhoto = takePhoto() {
-//                displayImageView.image = capturedPhoto
-//            }
-            firing = false
-        }
-    }
-    
-    
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if let key = keyPath {
             if key == "adjustingFocus" {
@@ -184,12 +169,20 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         }
     }
     
+//    func takeScreenshot(view: UIView) -> UIImage {
+//        UIGraphicsBeginImageContext(view.frame.size)
+//        videoPreviewLayer.render(in: UIGraphicsGetCurrentContext()!)
+//        // view.layer.render(in: UIGraphicsGetCurrentContext()!)
+//        let image = UIGraphicsGetImageFromCurrentImageContext()!
+//        UIGraphicsEndImageContext()
+//        return image
+//    }
+    
     // New take photo function uses AVCaptureSession
     func takePhoto() {
         if let videoConnection = stillImageOutput.connection(with: .video) {
             let photoSettings = AVCapturePhotoSettings()
             photoSettings.flashMode = .off
-            
             stillImageOutput.capturePhoto(with: photoSettings, delegate: self)
         }
     }
@@ -202,41 +195,90 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         }
     }
     
+    func preCropImage(image: UIImage) -> UIImage {
+        let screenWidth = UIScreen.main.bounds.width
+        let screenHeight = UIScreen.main.bounds.height
+
+        let heightScaleFactor = image.size.height / screenHeight
+        let extraWidth = image.size.width / heightScaleFactor - screenWidth
+        
+        // Only for iPhone X
+        if extraWidth > 0 {
+            let sideCropLength = extraWidth / 2
+            let cropRectangle = CGRect(x: 0, y: sideCropLength, width: screenHeight, height: screenWidth)
+            let preCropped = image.crop(rect: cropRectangle, scaleFactor: heightScaleFactor)
+            return preCropped
+        }
+        
+        return image
+    }
+    
     func photoTaken(image: UIImage) {
+        // Perform Pre-crop
+        let preCroppedImage = preCropImage(image: image)
+        
         // Crop photo based on specified frame
-        let scaleFactor = image.size.width / UIScreen.main.bounds.width
-        // Invert x and y co-ordinates because of iOS bug?
-        let newCropRectangle = CGRect(x: self.cropRectangle.minY, y: self.cropRectangle.minX, width: self.cropRectangle.height, height: self.cropRectangle.width)
-        let croppedImage = image.crop(rect: newCropRectangle, scaleFactor: scaleFactor)
+        let screenWidth = UIScreen.main.bounds.width
+        let scaleFactor = preCroppedImage.size.width / screenWidth
+
+        // Modify x and y co-ordinates because of the way iOS handles images - rotation happens 90º counter-clockwise
+        let newCropRectangle = CGRect(x: self.cropRectangle.minY, y: screenWidth - self.cropRectangle.maxX, width: self.cropRectangle.height, height: self.cropRectangle.width)
         
-        
-        
-        
+        let croppedImage = preCroppedImage.crop(rect: newCropRectangle, scaleFactor: scaleFactor)
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        UIImageWriteToSavedPhotosAlbum(croppedImage, nil, nil, nil)
         
         // Preview the images
-        let newImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 300, height: 500))
-        newImageView.contentMode = .scaleAspectFit
-        newImageView.image = croppedImage
-        self.view.addSubview(newImageView)
-        
-        
-        
+//        let newImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 300, height: 500))
+//        newImageView.contentMode = .scaleAspectFit
+//        newImageView.image = croppedImage
+//        self.view.addSubview(newImageView)
         
         // Feed it into Tesseract and extract text
         tesseract.image = croppedImage
         tesseract.recognize()
         
-        print(tesseract.recognizedText)
+        let lines = tesseract.recognizedBlocks(by: .textline) as! [G8RecognizedBlock]
+        
+        if lines.count > 0 {
+            // Get origin of first box
+//            let firstBoundingBox = lines.first!.boundingBox
+//            let firstAdjustedRect = TesseractDimensionsHelper.getFinalBoundingBox(cropRect: self.cropRectangle, boundingBox: firstBoundingBox)
+            
+            // Get all bounding boxes
+            let boundingBoxes = lines.map { $0.boundingBox }
+            let combinedBox = TesseractDimensionsHelper.getCombinedBoundingBox(cropRect: self.cropRectangle, boundingBoxes: boundingBoxes)
+            
+            var textLines = [String]()
+            for line in lines {
+                textLines.append(line.text)
+            }
+            
+            arHelper.insertPlaneIntoScene(finalBox: combinedBox, lines: textLines)
+        }
+        
+//        for line in lines as! [G8RecognizedBlock] {
+//            // Extract coordinates of text
+//            let boundingBox = line.boundingBox
+//            // Gets us the bounding box for a specific line of text.
+//            let adjustedRect = TesseractDimensionsHelper.getFinalBoundingBox(cropRect: self.cropRectangle, boundingBox: boundingBox)
+//            // arHelper.insertPlaneIntoScene(finalBox: adjustedRect, line: line.text)
+//            if let feature = arHelper.getNearestFeaturePoint(starting: adjustedRect.origin) {
+//                print("HALLELUJAH!")
+//                arHelper.insertTextIntoRect(rect: adjustedRect, text: line.text, hitResult: feature)
+//            }
+//        }
+        
         print("Recognition Complete")
-        // Extract coordinates of text
         
+        let tv = UITextView(frame: CGRect(x: 0, y: 0, width: 250, height: 100))
+        tv.text = tesseract.recognizedText
+        tv.textColor = UIColor.white
+        tv.backgroundColor = UIColor.purple
+        self.view.addSubview(tv)
         
-        
-//        let tv = UITextView(frame: CGRect(x: 0, y: 0, width: 250, height: 400))
-//        tv.text = tesseract.recognizedText
-//        tv.textColor = UIColor.white
-//        tv.backgroundColor = UIColor.black
-//        self.view.addSubview(tv)
+        // self.processedImageView = newImageView
+        self.tesseractTextView = tv
         
         // Bring back sceneView
         
@@ -245,32 +287,57 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         sceneView.session.run(self.configuration)
         print("We have returned to ARKit")
         
-        
-        
         // Calculate average coordinates/dimensions
         
         // Project back into 3D space
     }
     
+    @objc func removeExtraViews() {
+        print("Removing extra views")
+        if let tv = self.tesseractTextView {
+            tv.removeFromSuperview()
+            self.tesseractTextView = nil
+        }
+        
+        if let topIV = self.originalImageView {
+            topIV.removeFromSuperview()
+            self.originalImageView = nil
+        }
+        
+        if let botIV = self.processedImageView {
+            botIV.removeFromSuperview()
+            self.processedImageView = nil
+        }
+    }
+    
+    
+    // Come back to improve on this later.
     func preprocessedImage(for tesseract: G8Tesseract!, sourceImage: UIImage!) -> UIImage! {
         // Process photo for Tesseract
         let stillImageFilter = AdaptiveThreshold()
-        stillImageFilter.blurRadiusInPixels = 4.0
+        stillImageFilter.blurRadiusInPixels = 2.0
         var processedImage = sourceImage.filterWithPipeline { input, output in
             input --> stillImageFilter --> output
         }
         processedImage = UIImage(cgImage: processedImage.cgImage!, scale: 1.0, orientation: sourceImage.imageOrientation)
         
-        print("Size comparison:")
-        print(sourceImage.size)
-        print(processedImage.size)
-        
-        let iv = UIImageView(frame: CGRect(x: 0, y: 300, width: 300, height: 500))
-        iv.contentMode = .scaleAspectFit
-        iv.image = processedImage
-        self.view.addSubview(iv)
-        
         return processedImage
+    }
+    
+    override func becomeFirstResponder() -> Bool {
+        return true
+    }
+    
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            self.removeExtraViews()
+        }
+    }
+    
+    func addCancelTapRecognizerToIV(imageView: UIImageView) -> Void {
+        
+        let cancelTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(removeExtraViews))
+        imageView.addGestureRecognizer(cancelTapRecognizer)
     }
     
     @IBOutlet var sceneView: ARSCNView!
@@ -278,11 +345,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
+        
         // Set the view's delegate
         sceneView.delegate = self
         
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
+        
+        self.arHelper = ARKitHelper(sceneView: sceneView)
         
         // Test Tesseract Library
         self.tesseract = G8Tesseract(language:"eng")
@@ -293,11 +364,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         tesseract.pageSegmentationMode = .auto
         tesseract.charWhitelist = "abcdefghijklmnopqrstuvwxyz012345789()//.,:;"
 
-        // Create a new scene
-        // let scene = SCNScene(named: "art.scnassets/ship.scn")!
-        
-        // Set the scene to the view
-        // sceneView.scene = scene
     }
     
     func shouldCancelImageRecognitionForTesseract(tesseract: G8Tesseract!) -> Bool {
