@@ -319,8 +319,11 @@ class ARKitHelper: NSObject {
     }
     
     func cleanStrings(lines: [String]) -> [String] {
-        return lines.filter {
-            return $0.trimmingCharacters(in: .whitespacesAndNewlines).count > 0
+        return lines.map {
+            $0.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        .filter {
+            return $0.count > 0
         }
     }
     
@@ -352,6 +355,11 @@ class ARKitHelper: NSObject {
     
     func insertTextOntoPlane(planeNode: SCNNode, lines: [String]) {
         let cleanedStrings = cleanStrings(lines: lines)
+        for line in cleanedStrings {
+            print("____")
+            print(line)
+        }
+        
         let finalText = constructStringFromLines(lines: cleanedStrings)
         let textGeom = SCNText(string: finalText, extrusionDepth: 1.0)
         textGeom.font = UIFont(name: "Dyslexie-Regular", size: 12.0)
@@ -360,35 +368,20 @@ class ARKitHelper: NSObject {
         let textNode = SCNNode(geometry: textGeom)
         let textScale = getTextScale(planeNode: planeNode, textNode: textNode)
         textNode.scale = SCNVector3(textScale, textScale, textScale)
-
         
+        print(textScale)
+
         let textHeight = textGeom.boundingBox.max.y - textGeom.boundingBox.min.y
         let textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x
         textNode.pivot = SCNMatrix4MakeTranslation(textWidth/2, textHeight/2, 0)
         planeNode.addChildNode(textNode)
     }
     
-    func insertTextIntoRect(rect: CGRect, lines: [String], hitResult: ARHitTestResult) {
-        let finalText = constructStringFromLines(lines: lines)
-        let textGeom = SCNText(string: finalText, extrusionDepth: 1.0)
-        textGeom.font = UIFont(name: "Dyslexie-Regular", size: 12.0)
-        textGeom.firstMaterial?.diffuse.contents = UIColor(red: 4/255, green: 111/255, blue: 191/255, alpha: 1)
-        let textNode = SCNNode(geometry: textGeom)
-        textNode.position = SCNVector3(
-            hitResult.worldTransform.columns.3.x,
-            hitResult.worldTransform.columns.3.y,
-            hitResult.worldTransform.columns.3.z
-        )
-        
-        textNode.scale = SCNVector3(0.001, 0.001, 0.001)
-        sceneView.scene.rootNode.addChildNode(textNode)
-    }
-    
     // Dev Feature to mark actual spots
     func markFeaturePoints(hitResults: [ARHitTestResult]) {
         for (i, res) in hitResults.enumerated() {
             let fp = SCNSphere(radius: 0.5)
-            fp.firstMaterial?.diffuse.contents = UIColor.red
+            fp.firstMaterial?.diffuse.contents = UIColor.purple
             let node = SCNNode(geometry: fp)
             node.position = SCNVector3(
                 res.worldTransform.columns.3.x,

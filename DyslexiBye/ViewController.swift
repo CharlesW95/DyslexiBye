@@ -160,8 +160,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
                     if newVal == 0 {
                         focusCounter += 1
                         if focusCounter == 2 {
-                            self.finishedFocusing()
                             focusCounter = 0
+                            self.finishedFocusing()
                         }
                     }
                 }
@@ -169,18 +169,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         }
     }
     
-//    func takeScreenshot(view: UIView) -> UIImage {
-//        UIGraphicsBeginImageContext(view.frame.size)
-//        videoPreviewLayer.render(in: UIGraphicsGetCurrentContext()!)
-//        // view.layer.render(in: UIGraphicsGetCurrentContext()!)
-//        let image = UIGraphicsGetImageFromCurrentImageContext()!
-//        UIGraphicsEndImageContext()
-//        return image
-//    }
-    
     // New take photo function uses AVCaptureSession
     func takePhoto() {
-        if let videoConnection = stillImageOutput.connection(with: .video) {
+        if let _ = stillImageOutput.connection(with: .video) {
             let photoSettings = AVCapturePhotoSettings()
             photoSettings.flashMode = .off
             stillImageOutput.capturePhoto(with: photoSettings, delegate: self)
@@ -225,8 +216,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         let newCropRectangle = CGRect(x: self.cropRectangle.minY, y: screenWidth - self.cropRectangle.maxX, width: self.cropRectangle.height, height: self.cropRectangle.width)
         
         let croppedImage = preCroppedImage.crop(rect: newCropRectangle, scaleFactor: scaleFactor)
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-        UIImageWriteToSavedPhotosAlbum(croppedImage, nil, nil, nil)
+//        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+//        UIImageWriteToSavedPhotosAlbum(croppedImage, nil, nil, nil)
         
         // Preview the images
 //        let newImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 300, height: 500))
@@ -242,9 +233,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         
         if lines.count > 0 {
             // Get origin of first box
-//            let firstBoundingBox = lines.first!.boundingBox
-//            let firstAdjustedRect = TesseractDimensionsHelper.getFinalBoundingBox(cropRect: self.cropRectangle, boundingBox: firstBoundingBox)
-            
             // Get all bounding boxes
             let boundingBoxes = lines.map { $0.boundingBox }
             let combinedBox = TesseractDimensionsHelper.getCombinedBoundingBox(cropRect: self.cropRectangle, boundingBoxes: boundingBoxes)
@@ -256,18 +244,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
             
             arHelper.insertPlaneIntoScene(finalBox: combinedBox, lines: textLines)
         }
-        
-//        for line in lines as! [G8RecognizedBlock] {
-//            // Extract coordinates of text
-//            let boundingBox = line.boundingBox
-//            // Gets us the bounding box for a specific line of text.
-//            let adjustedRect = TesseractDimensionsHelper.getFinalBoundingBox(cropRect: self.cropRectangle, boundingBox: boundingBox)
-//            // arHelper.insertPlaneIntoScene(finalBox: adjustedRect, line: line.text)
-//            if let feature = arHelper.getNearestFeaturePoint(starting: adjustedRect.origin) {
-//                print("HALLELUJAH!")
-//                arHelper.insertTextIntoRect(rect: adjustedRect, text: line.text, hitResult: feature)
-//            }
-//        }
         
         print("Recognition Complete")
         
@@ -362,7 +338,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         tesseract.engineMode = .tesseractCubeCombined
         
         tesseract.pageSegmentationMode = .auto
-        tesseract.charWhitelist = "abcdefghijklmnopqrstuvwxyz012345789()//.,:;"
+        tesseract.charWhitelist = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345789()//.,:;%"
 
     }
     
