@@ -90,17 +90,17 @@ class ARKitHelper: NSObject {
         return [ARHitTestResult]()
     }
     
-    func euclideanDistanceHitTestResult(first: ARHitTestResult, second: ARHitTestResult) -> CGFloat {
+    func euclideanDistanceHitTestResult(first: SCNVector3, second: SCNVector3) -> CGFloat {
         var sum: CGFloat = 0
-        sum += CGFloat(pow(first.worldTransform.columns.3.x - second.worldTransform.columns.3.x, 2))
-        sum += CGFloat(pow(first.worldTransform.columns.3.y - second.worldTransform.columns.3.y, 2))
-        sum += CGFloat(pow(first.worldTransform.columns.3.z - second.worldTransform.columns.3.z, 2))
+        sum += CGFloat(pow(first.x - second.x, 2))
+        sum += CGFloat(pow(first.y - second.y, 2))
+        sum += CGFloat(pow(first.z - second.z, 2))
         return CGFloat(pow(sum, 0.5))
     }
     
-    func createPlane(hitResults: [ARHitTestResult]) -> SCNPlane {
-        let width = euclideanDistanceHitTestResult(first: hitResults[0], second: hitResults[1])
-        let height = euclideanDistanceHitTestResult(first: hitResults[0], second: hitResults[2])
+    func createPlane(vectors: [SCNVector3]) -> SCNPlane {
+        let width = euclideanDistanceHitTestResult(first: vectors[0], second: vectors[1])
+        let height = euclideanDistanceHitTestResult(first: vectors[0], second: vectors[2])
         let widthScaleFactor: CGFloat = 1.5, heightScaleFactor: CGFloat = 1.8
         return SCNPlane(width: width * widthScaleFactor, height: height * heightScaleFactor)
     }
@@ -114,6 +114,10 @@ class ARKitHelper: NSObject {
         )
     }
     
+    func hitTestResultsToSCNVector3(results: [ARHitTestResult]) -> [SCNVector3] {
+        return results.map { hitTestResultToSCNVector3(hitTestResult: $0) }
+    }
+    
     func hitTestResultToSCNVector3(hitTestResult: ARHitTestResult) -> SCNVector3 {
         return SCNVector3(
             hitTestResult.worldTransform.columns.3.x,
@@ -122,10 +126,10 @@ class ARKitHelper: NSObject {
         )
     }
     
-    func calculateNormalVector(hitResults: [ARHitTestResult]) -> SCNVector3 {
-        let a = hitTestResultToSCNVector3(hitTestResult: hitResults[0])
-        let b = hitTestResultToSCNVector3(hitTestResult: hitResults[1])
-        let c = hitTestResultToSCNVector3(hitTestResult: hitResults[2])
+    func calculateNormalVector(vectors: [SCNVector3]) -> SCNVector3 {
+        let a = vectors[0]
+        let b = vectors[1]
+        let c = vectors[2]
         
         let ab = calculateDirectionalVectorAB(a: a, b: b)
         let bc = calculateDirectionalVectorAB(a: b, b: c)
@@ -172,6 +176,14 @@ class ARKitHelper: NSObject {
         return a.x * b.x + a.y * b.y + a.z * b.z
     }
     
+    func scaleVector(vector: SCNVector3, scale: Float) -> SCNVector3 {
+        return SCNVector3(
+            vector.x * scale,
+            vector.y * scale,
+            vector.z * scale
+        )
+    }
+ 
     // Returns rotation angle in radians
     func calculatePlaneRotationAngle(normal: SCNVector3, original: SCNVector3) -> Float {
         let normalizedNormal = self.normalize(vec: normal)
@@ -272,22 +284,27 @@ class ARKitHelper: NSObject {
     
     // Use position offset instead of pivot translation to place plane to preserve
     // rotation point.
-    func offsetPlanePosition(pos: SCNVector3, planeGeometry: SCNPlane) -> SCNVector3 {
+    func offsetPlanePosition(pos: SCNVector3, planeGeometry: SCNPlane, vectors: [SCNVector3]) -> SCNVector3 {
         // Move in the positive x direction and negative y direction.
+        let positiveXDirection = self.normalize(vec: self.calculateDirectionalVectorAB(a: vectors[0], b: vectors[1]))
+        let negativeYDirection = self.normalize(vec: self.calculateDirectionalVectorAB(a: vectors[0], b: vectors[2]))
+        
+        let xOffset = self.scaleVector(vector: positiveXDirection, scale: Float(planeGeometry.width/2))
+        let yOffset = self.scaleVector(vector: negativeYDirection, scale: Float(planeGeometry.height/2))
+        
         return SCNVector3(
-            pos.x + Float(planeGeometry.width/2),
-            pos.y - Float(planeGeometry.height/2),
-            pos.z
+            pos.x + xOffset.x + yOffset.x,
+            pos.y + xOffset.y + yOffset.y,
+            pos.z + xOffset.z + yOffset.z
         )
     }
     
     func insertPlaneIntoScene(finalBox: CGRect, lines: [String]) -> Bool {
-        // let fourCornerResult = fourCornerHitTest(startingPoint: finalBox.origin, width: finalBox.width, height: finalBox.height)
-        // let corners = featurePointsForThreeCorners(box: finalBox)
         let corners = self.latestCornerFeaturePoints
-        if corners.count == 3 {
-            let plane = createPlane(hitResults: corners)
-            var normalVec = calculateNormalVector(hitResults: corners)
+        let cornerVectors = self.hitTestResultsToSCNVector3(results: corners)
+        if cornerVectors.count == 3 {
+            let plane = createPlane(vectors: cornerVectors)
+            var normalVec = calculateNormalVector(vectors: cornerVectors)
             normalVec = negateVector(vec: normalVec)
             
             // Calculate rotation
@@ -296,9 +313,9 @@ class ARKitHelper: NSObject {
             let rotationAngle = calculatePlaneRotationAngle(normal: normalVec, original: originalNormal)
             
             // Create position vector
-            let position = hitTestResultToSCNVector3(hitTestResult: corners[0])
-            let finalPos = offsetPlanePosition(pos: position, planeGeometry: plane)
-            let planeNode = createPlaneNode(position: position, rotationAxis: rotationAxis, rotationAngle: rotationAngle)
+            let position = cornerVectors[0]
+            let finalPos = offsetPlanePosition(pos: position, planeGeometry: plane, vectors: cornerVectors)
+            let planeNode = createPlaneNode(position: finalPos, rotationAxis: rotationAxis, rotationAngle: rotationAngle)
             
             let gridMaterial = SCNMaterial()
             gridMaterial.isDoubleSided = true

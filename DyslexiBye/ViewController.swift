@@ -247,11 +247,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         
         print("Recognition Complete")
         
-        let tv = UITextView(frame: CGRect(x: 0, y: 0, width: 250, height: 100))
-        tv.text = tesseract.recognizedText
-        tv.textColor = UIColor.white
-        tv.backgroundColor = UIColor.purple
-        self.view.addSubview(tv)
+//        let tv = UITextView(frame: CGRect(x: 0, y: 0, width: 250, height: 100))
+//        tv.text = tesseract.recognizedText
+//        tv.textColor = UIColor.white
+//        tv.backgroundColor = UIColor.purple
+//        self.view.addSubview(tv)
         
         // self.processedImageView = newImageView
         self.tesseractTextView = tv
