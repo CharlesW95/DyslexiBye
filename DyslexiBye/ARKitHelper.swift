@@ -135,6 +135,14 @@ class ARKitHelper: NSObject {
         return normalize(vec: normalVec)
     }
     
+    func negateVector(vec: SCNVector3) -> SCNVector3 {
+        return SCNVector3(
+            -vec.x,
+            -vec.y,
+            -vec.z
+        )
+    }
+    
     func calculateMagnitude(vec: SCNVector3) -> Float {
         var sum: Float = 0
         sum += pow(vec.x, 2)
@@ -165,21 +173,19 @@ class ARKitHelper: NSObject {
     }
     
     // Returns rotation angle in radians
-    func calculatePlaneRotationAngle(normal: SCNVector3, original: SCNVector3) -> CGFloat {
-        let cosineAngle = dotProd(a: normal, b: original)
-        return CGFloat(acos(cosineAngle))
+    func calculatePlaneRotationAngle(normal: SCNVector3, original: SCNVector3) -> Float {
+        let normalizedNormal = self.normalize(vec: normal)
+        let normalizedOriginal = self.normalize(vec: original)
+        let cosineAngle = dotProd(a: normalizedNormal, b: normalizedOriginal)
+        return acos(cosineAngle)
     }
     
-    func printFourCorners(corners: [ARHitTestResult]) {
-        for corner in corners {
-            let v = hitTestResultToSCNVector3(hitTestResult: corner)
-            print("VECTOR")
-            print(v.x)
-            print(v.y)
-            print(v.z)
-        }
+    // Returns rotation axis for plane rotation
+    func calculateRotationAxis(normal: SCNVector3, original: SCNVector3) -> SCNVector3 {
+        let crossed = self.crossProduct(a: normal, b: original)
+        return self.normalize(vec: crossed)
     }
-    
+
     func populateFeaturePoints(rect: CGRect) {
         self.latestCornerFeaturePoints = self.featurePointsForThreeCorners(box: rect)
     }
@@ -267,6 +273,7 @@ class ARKitHelper: NSObject {
     // Use position offset instead of pivot translation to place plane to preserve
     // rotation point.
     func offsetPlanePosition(pos: SCNVector3, planeGeometry: SCNPlane) -> SCNVector3 {
+        // Move in the positive x direction and negative y direction.
         return SCNVector3(
             pos.x + Float(planeGeometry.width/2),
             pos.y - Float(planeGeometry.height/2),
@@ -280,20 +287,25 @@ class ARKitHelper: NSObject {
         let corners = self.latestCornerFeaturePoints
         if corners.count == 3 {
             let plane = createPlane(hitResults: corners)
-            let normalVec = calculateNormalVector(hitResults: corners)
-            // MAYBE: need to adjust original vector direction
-            let rotationAngle = calculatePlaneRotationAngle(normal: normalVec, original: SCNVector3(0, 0, 1))
+            var normalVec = calculateNormalVector(hitResults: corners)
+            normalVec = negateVector(vec: normalVec)
+            
+            // Calculate rotation
+            let originalNormal = SCNVector3(0, 0, 1)
+            let rotationAxis = calculateRotationAxis(normal: normalVec, original: originalNormal)
+            let rotationAngle = calculatePlaneRotationAngle(normal: normalVec, original: originalNormal)
             
             // Create position vector
             let position = hitTestResultToSCNVector3(hitTestResult: corners[0])
             let finalPos = offsetPlanePosition(pos: position, planeGeometry: plane)
-            let planeNode = createPlaneNode(position: finalPos, rotationAngle: Float(rotationAngle))
+            let planeNode = createPlaneNode(position: position, rotationAxis: rotationAxis, rotationAngle: rotationAngle)
             
             let gridMaterial = SCNMaterial()
             gridMaterial.isDoubleSided = true
             gridMaterial.diffuse.contents = UIColor.yellow
             plane.materials = [gridMaterial]
             planeNode.geometry = plane
+            
             sceneView.scene.rootNode.addChildNode(planeNode)
             
             // Insert text onto plane
@@ -302,19 +314,17 @@ class ARKitHelper: NSObject {
             print("Plane was inserted")
             
             // MARK FEATURES
-            markFeaturePoints(hitResults: corners)
+            markFeaturePoints(hitResults: corners, normal: normalVec, original: originalNormal)
             return true
         } else {
             return false
         }
     }
     
-    func createPlaneNode(position: SCNVector3, rotationAngle: Float) -> SCNNode {
+    func createPlaneNode(position: SCNVector3, rotationAxis: SCNVector3, rotationAngle: Float) -> SCNNode {
         let planeNode = SCNNode()
         planeNode.position = position
-        // MAYBE: invert rotation angle (remove -)
-        // Do we not need this at all?
-        // planeNode.transform = SCNMatrix4MakeRotation(-rotationAngle, 1, 0, 0)
+        planeNode.rotation = SCNVector4(rotationAxis.x, rotationAxis.y, rotationAxis.z, -rotationAngle)
         return planeNode
     }
     
@@ -355,10 +365,6 @@ class ARKitHelper: NSObject {
     
     func insertTextOntoPlane(planeNode: SCNNode, lines: [String]) {
         let cleanedStrings = cleanStrings(lines: lines)
-        for line in cleanedStrings {
-            print("____")
-            print(line)
-        }
         
         let finalText = constructStringFromLines(lines: cleanedStrings)
         let textGeom = SCNText(string: finalText, extrusionDepth: 1.0)
@@ -368,8 +374,6 @@ class ARKitHelper: NSObject {
         let textNode = SCNNode(geometry: textGeom)
         let textScale = getTextScale(planeNode: planeNode, textNode: textNode)
         textNode.scale = SCNVector3(textScale, textScale, textScale)
-        
-        print(textScale)
 
         let textHeight = textGeom.boundingBox.max.y - textGeom.boundingBox.min.y
         let textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x
@@ -378,10 +382,10 @@ class ARKitHelper: NSObject {
     }
     
     // Dev Feature to mark actual spots
-    func markFeaturePoints(hitResults: [ARHitTestResult]) {
+    func markFeaturePoints(hitResults: [ARHitTestResult], normal: SCNVector3, original: SCNVector3) {
         for (i, res) in hitResults.enumerated() {
             let fp = SCNSphere(radius: 0.5)
-            fp.firstMaterial?.diffuse.contents = UIColor.purple
+            fp.firstMaterial?.diffuse.contents = UIColor.red
             let node = SCNNode(geometry: fp)
             node.position = SCNVector3(
                 res.worldTransform.columns.3.x,
@@ -392,12 +396,39 @@ class ARKitHelper: NSObject {
             if i == 0 {
                 node.scale = SCNVector3(0.005, 0.005, 0.005)
             } else {
-                node.scale = SCNVector3(0.001, 0.001, 0.001)
+                node.scale = SCNVector3(0.002, 0.002, 0.002)
             }
-            
-            
-            
             sceneView.scene.rootNode.addChildNode(node)
+            
+//            for i in 1...5 {
+//                let endVecSphere = SCNSphere(radius: 0.5)
+//                endVecSphere.firstMaterial?.diffuse.contents = UIColor.blue
+//                let node = SCNNode(geometry: endVecSphere)
+//                let distMultiplier: Float = 0.01 * Float(i)
+//                node.position = SCNVector3(
+//                    res.worldTransform.columns.3.x + normal.x * distMultiplier,
+//                    res.worldTransform.columns.3.y + normal.y * distMultiplier,
+//                    res.worldTransform.columns.3.z + normal.z * distMultiplier
+//                )
+//                node.scale = SCNVector3(0.003, 0.003, 0.003)
+//                sceneView.scene.rootNode.addChildNode(node)
+//            }
+//
+//            for i in 1...10 {
+//                let endVecSphere = SCNSphere(radius: 0.5)
+//                endVecSphere.firstMaterial?.diffuse.contents = UIColor.green
+//                let node = SCNNode(geometry: endVecSphere)
+//                let distMultiplier: Float = 0.005 * Float(i)
+//                node.position = SCNVector3(
+//                    res.worldTransform.columns.3.x + original.x * distMultiplier,
+//                    res.worldTransform.columns.3.y + original.y * distMultiplier,
+//                    res.worldTransform.columns.3.z + original.z * distMultiplier
+//                )
+//                node.scale = SCNVector3(0.003, 0.003, 0.003)
+//                sceneView.scene.rootNode.addChildNode(node)
+//            }
+            
+            
         }
     }
 }
