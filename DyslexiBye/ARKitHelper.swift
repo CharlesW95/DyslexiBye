@@ -16,14 +16,15 @@ class ARKitHelper: NSObject {
     
     var sceneView: ARSCNView
     var latestCornerFeaturePoints: [ARHitTestResult]
-    
+    var planeNodes: Set<SCNNode>
     
     init(sceneView: ARSCNView) {
         self.sceneView = sceneView
         self.latestCornerFeaturePoints = [ARHitTestResult]()
+        self.planeNodes = Set<SCNNode>()
     }
     
-    func hitTest(testPoint: CGPoint) -> (Bool, ARHitTestResult?) {
+    func hitTest(testPoint: CGPoint, type: ARHitTestResult.ResultType) -> (Bool, ARHitTestResult?) {
         let hitTestResults = self.sceneView.hitTest(testPoint, types: .featurePoint)
         
         if let hitResult = hitTestResults.first {
@@ -53,43 +54,7 @@ class ARKitHelper: NSObject {
         }
         return (nil, currentX)
     }
-    
-    func fourCornerHitTest(startingPoint: CGPoint, width: CGFloat, height: CGFloat) -> [ARHitTestResult] {
-        
-        let endX = startingPoint.x + width
-        let endY = startingPoint.y + height
-        
-        let topLeft = startingPoint
-        let topRight = CGPoint(x: endX, y: startingPoint.y)
-        let bottomLeft = CGPoint(x: startingPoint.x, y: endY)
-        let bottomRight = CGPoint(x: endX, y: endY)
-        
-        let increment: CGFloat = 1.0
-        
-        var hitTestResults = [ARHitTestResult]()
-        
-        let tlResults = conductHitTest(origin: topLeft, increment: increment, limit: endX, comparator: lte)
-        if let tlHit = tlResults.0 {
-            hitTestResults.append(tlHit)
-            let trResults = conductHitTest(origin: topRight, increment: -increment, limit: tlResults.1, comparator: gte)
-            if let trHit = trResults.0 {
-                hitTestResults.append(trHit)
-                let blResults = conductHitTest(origin: bottomLeft, increment: increment, limit: endX, comparator: lte)
-                if let blHit = blResults.0 {
-                    hitTestResults.append(blHit)
-                    let brResults = conductHitTest(origin: bottomRight, increment: -increment, limit: blResults.1, comparator: gte)
-                    if let brHit = brResults.0 {
-                        hitTestResults.append(brHit)
-                        return hitTestResults // Success (4 corners identified)
-                    }
-                }
-            }
-        }
-        
-        // Failed, return empty list
-        return [ARHitTestResult]()
-    }
-    
+
     func euclideanDistanceHitTestResult(first: SCNVector3, second: SCNVector3) -> CGFloat {
         var sum: CGFloat = 0
         sum += CGFloat(pow(first.x - second.x, 2))
@@ -101,7 +66,7 @@ class ARKitHelper: NSObject {
     func createPlane(vectors: [SCNVector3]) -> SCNPlane {
         let width = euclideanDistanceHitTestResult(first: vectors[0], second: vectors[1])
         let height = euclideanDistanceHitTestResult(first: vectors[0], second: vectors[2])
-        let widthScaleFactor: CGFloat = 1.5, heightScaleFactor: CGFloat = 1.8
+        let widthScaleFactor: CGFloat = 1, heightScaleFactor: CGFloat = 1
         return SCNPlane(width: width * widthScaleFactor, height: height * heightScaleFactor)
     }
     
@@ -270,7 +235,7 @@ class ARKitHelper: NSObject {
             // Shift to new point
             testPoint = shiftPoint(initial: initial, incrementX: incrementX, incrementY: incrementY)
             // Perform hitTest
-            let hitTestResult = hitTest(testPoint: testPoint)
+            let hitTestResult = hitTest(testPoint: testPoint, type: .featurePoint)
             if hitTestResult.0 { // Feature Point found
                 return (hitTestResult.0, hitTestResult.1, testPoint)
             }
@@ -319,23 +284,45 @@ class ARKitHelper: NSObject {
             
             let gridMaterial = SCNMaterial()
             gridMaterial.isDoubleSided = true
-            gridMaterial.diffuse.contents = UIColor.yellow
+            gridMaterial.diffuse.contents = Colors.backgroundYellow
             plane.materials = [gridMaterial]
             planeNode.geometry = plane
+            self.planeNodes.insert(planeNode)
             
-            sceneView.scene.rootNode.addChildNode(planeNode)
             
             // Insert text onto plane
             insertTextOntoPlane(planeNode: planeNode, lines: lines)
-            
+            sceneView.scene.rootNode.addChildNode(planeNode)
             print("Plane was inserted")
             
             // MARK FEATURES
-            markFeaturePoints(hitResults: corners, normal: normalVec, original: originalNormal)
+            // markFeaturePoints(hitResults: corners, normal: normalVec, original: originalNormal)
             return true
         } else {
             return false
         }
+    }
+    
+    func getPlaneNodeAtTap(tapLocation: CGPoint) -> SCNNode? {
+        if let res = self.sceneView.hitTest(tapLocation, options: nil).first {
+            if self.planeNodes.contains(res.node) {
+                print("CONTAINED")
+                return res.node
+            } else {
+                print("NOT CONTAINED")
+            }
+        } else {
+            print("NOT EVEN DETECTED")
+        }
+        return nil
+    }
+    
+    func getPlaneNodeText(node: SCNNode) -> String {
+        var str = ""
+        if let name = node.name {
+            str = name
+        }
+        return str
     }
     
     func createPlaneNode(position: SCNVector3, rotationAxis: SCNVector3, rotationAngle: Float) -> SCNNode {
@@ -384,9 +371,15 @@ class ARKitHelper: NSObject {
         let cleanedStrings = cleanStrings(lines: lines)
         
         let finalText = constructStringFromLines(lines: cleanedStrings)
+        // TODO: Limit the amount of text
+        print(finalText)
+        
+        // Associate plane with text
+        planeNode.name = finalText
+        
         let textGeom = SCNText(string: finalText, extrusionDepth: 1.0)
         textGeom.font = UIFont(name: "Dyslexie-Regular", size: 12.0)
-        textGeom.firstMaterial?.diffuse.contents = UIColor(red: 4/255, green: 111/255, blue: 191/255, alpha: 1)
+        textGeom.firstMaterial?.diffuse.contents = Colors.textBlue
         
         let textNode = SCNNode(geometry: textGeom)
         let textScale = getTextScale(planeNode: planeNode, textNode: textNode)
@@ -396,6 +389,18 @@ class ARKitHelper: NSObject {
         let textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x
         textNode.pivot = SCNMatrix4MakeTranslation(textWidth/2, textHeight/2, 0)
         planeNode.addChildNode(textNode)
+    }
+    
+    // Check if there are enough feature points
+    func featurePointsReady() -> Bool {
+        if let frame = self.sceneView.session.currentFrame {
+            if let cloud = frame.rawFeaturePoints {
+                if cloud.points.count > 2 {
+                    return true
+                }
+            }
+        }
+        return false
     }
     
     // Dev Feature to mark actual spots

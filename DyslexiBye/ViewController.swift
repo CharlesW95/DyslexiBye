@@ -9,6 +9,7 @@
 import UIKit
 import SceneKit
 import ARKit
+import Foundation
 import AVFoundation
 import TesseractOCR
 import GPUImage
@@ -16,18 +17,22 @@ import GPUImage
 class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, AVCapturePhotoCaptureDelegate {
     
     // App State
-    var firing = false
-    var focusCounter = 0
+    var focusLocked = false
+    var backgroundWorker: DispatchQueue!
     
     // AVCaptureSession Variables
     var captureSession: AVCaptureSession!
     var videoPreviewLayer: AVCaptureVideoPreviewLayer!
     var stillImageOutput: AVCapturePhotoOutput!
+    var captureDevice: AVCaptureDevice!
     var cropRectangle: CGRect!
     
     // Custom Visual Elements
+    var featureState: FeatureState!
     var focusAnimationBlock: FocusAnimationBlock?
     var imageCaptureBlock: ImageCaptureBlock?
+    
+    var featureStateTimer: Timer!
     
     var tesseractTextView: UITextView?
     var originalImageView: UIImageView?
@@ -48,8 +53,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         let sender = sender as! UIPanGestureRecognizer
         switch (sender.state) {
             case .began:
-                print("This is the starting location")
-                print(sender.location(in: self.view))
+//                print("This is the starting location")
+//                print(sender.location(in: self.view))
                 // Initialize the ImageCaptureBlock
                 self.imageCaptureBlock = ImageCaptureBlock(startingPoint: sender.location(in: self.view))
                 self.view.addSubview(self.imageCaptureBlock!)
@@ -65,6 +70,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
                         // Start image capture
                         self.cropRectangle = captureBlock.returnFrame()
                         arHelper.populateFeaturePoints(rect: self.cropRectangle)
+                        self.focusLocked = false // Allow image taking
                         startImageFocus(center: captureBlock.returnCenter())
                     } else {
                         print("Area was invalid for photo capture.")
@@ -75,11 +81,30 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         }
     }
     
+    @IBAction func sceneTapped(_ sender: Any) {
+        let sender = sender as! UITapGestureRecognizer
+        switch (sender.state) {
+        case .ended:
+            let tapLocation = sender.location(in: self.view)
+            if let node = arHelper.getPlaneNodeAtTap(tapLocation: tapLocation) {
+                let text = arHelper.getPlaneNodeText(node: node)
+                // View Controller Pop
+                print(text)
+                self.performSegue(withIdentifier: "viewTextSegue", sender: text)
+            }
+            
+            
+        default:
+            print("Touch did not go through.")
+        }
+    }
+    
     func startImageFocus(center: CGPoint) {
         // Hide the sceneView temporarily
+        print("STARTING NEW PROCESS")
         sceneView.session.pause() // Pause the ARSession
         // Set up ARCaptureSession
-        let captureDevice = AVCaptureDevice.default(for: .video)
+        self.captureDevice = AVCaptureDevice.default(for: .video)
         
         do {
             // Input setup
@@ -118,7 +143,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
                     device.exposurePointOfInterest = focusPoint
                     device.exposureMode = .continuousAutoExposure
                     device.addObserver(self, forKeyPath: "adjustingFocus", options: NSKeyValueObservingOptions.new, context: nil)
+                    device.addObserver(self, forKeyPath: "focusMode", options: NSKeyValueObservingOptions.new, context: nil)
                     device.unlockForConfiguration()
+                    
                 }
             }
             
@@ -157,24 +184,33 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
             if key == "adjustingFocus" {
                 if let changeDict = change {
                     let newVal = changeDict[NSKeyValueChangeKey.newKey] as! Int
+                    print("AdjustingFocus Changed")
+                    print(newVal)
+                    if newVal == 0 && self.focusLocked {
+                        self.finishedFocusing()
+                    }
+                }
+            } else if key == "focusMode" {
+                if let changeDict = change {
+                    let newVal = changeDict[NSKeyValueChangeKey.newKey] as! Int
+                    print("FOCUSMODE CHANGED")
+                    print(newVal)
                     if newVal == 0 {
-                        focusCounter += 1
-                        if focusCounter == 2 {
-                            focusCounter = 0
-                            self.finishedFocusing()
-                        }
+                        self.focusLocked = true
                     }
                 }
             }
         }
     }
     
+    var takePhotoCount = 0
     // New take photo function uses AVCaptureSession
     func takePhoto() {
         if let _ = stillImageOutput.connection(with: .video) {
             let photoSettings = AVCapturePhotoSettings()
             photoSettings.flashMode = .off
             stillImageOutput.capturePhoto(with: photoSettings, delegate: self)
+            takePhotoCount += 1
         }
     }
     
@@ -216,15 +252,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         let newCropRectangle = CGRect(x: self.cropRectangle.minY, y: screenWidth - self.cropRectangle.maxX, width: self.cropRectangle.height, height: self.cropRectangle.width)
         
         let croppedImage = preCroppedImage.crop(rect: newCropRectangle, scaleFactor: scaleFactor)
-//        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-//        UIImageWriteToSavedPhotosAlbum(croppedImage, nil, nil, nil)
-        
-        // Preview the images
-//        let newImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 300, height: 500))
-//        newImageView.contentMode = .scaleAspectFit
-//        newImageView.image = croppedImage
-//        self.view.addSubview(newImageView)
-        
+        UIImageWriteToSavedPhotosAlbum(croppedImage, nil, nil, nil)
         // Feed it into Tesseract and extract text
         tesseract.image = croppedImage
         tesseract.recognize()
@@ -247,19 +275,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         
         print("Recognition Complete")
         
-//        let tv = UITextView(frame: CGRect(x: 0, y: 0, width: 250, height: 100))
-//        tv.text = tesseract.recognizedText
-//        tv.textColor = UIColor.white
-//        tv.backgroundColor = UIColor.purple
-//        self.view.addSubview(tv)
-        
-        // self.processedImageView = newImageView
-        self.tesseractTextView = tv
-        
         // Bring back sceneView
-        
+        print(takePhotoCount)
         videoPreviewLayer.removeFromSuperlayer()
+        videoPreviewLayer = nil
         captureSession.stopRunning()
+        captureSession = nil
+        captureDevice.removeObserver(self, forKeyPath: "adjustingFocus")
+        captureDevice.removeObserver(self, forKeyPath: "focusMode")
+        captureDevice = nil
         sceneView.session.run(self.configuration)
         print("We have returned to ARKit")
         
@@ -321,8 +345,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
-        
+        // sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         // Set the view's delegate
         sceneView.delegate = self
         
@@ -330,6 +353,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         sceneView.showsStatistics = true
         
         self.arHelper = ARKitHelper(sceneView: sceneView)
+        
+        self.featureState = .notReady
+        self.backgroundWorker = DispatchQueue.global()
+        
+        startUpdatingFeatureState()
         
         // Test Tesseract Library
         self.tesseract = G8Tesseract(language:"eng")
@@ -341,6 +369,38 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         tesseract.charWhitelist = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345789()//.,:;%"
 
     }
+    
+    func startUpdatingFeatureState() {
+        self.featureStateTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(checkFeatureState), userInfo: nil, repeats: true)
+    }
+    
+    @objc func checkFeatureState() {
+        backgroundWorker.async {
+            if self.arHelper.featurePointsReady() {
+                if self.featureState == .notReady {
+                    DispatchQueue.main.async {
+                        self.updateFeatureStateIndicator(state: .ready)
+                    }
+                }
+            } else {
+                if self.featureState == .ready {
+                    DispatchQueue.main.async {
+                        self.updateFeatureStateIndicator(state: .notReady)
+                    }
+                }
+            }
+        }
+    }
+    
+    func updateFeatureStateIndicator(state: FeatureState) {
+        self.featureState = state
+        if state == .ready {
+            print("READY")
+        } else {
+            print("NOT READY")
+        }
+    }
+    
     
     func shouldCancelImageRecognitionForTesseract(tesseract: G8Tesseract!) -> Bool {
         return false; // return true if you need to interrupt tesseract before it finishes
@@ -365,6 +425,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let id = segue.identifier {
+            if id == "viewTextSegue" {
+                let destVC = segue.destination as! ViewTextViewController
+                destVC.text = sender as! String
+            }
+        }
     }
 
     // MARK: - ARSCNViewDelegate

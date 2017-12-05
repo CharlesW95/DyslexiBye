@@ -16,6 +16,9 @@
 		565C45311F83FD320012E13F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 565C452F1F83FD320012E13F /* Main.storyboard */; };
 		565C45331F83FD320012E13F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 565C45321F83FD320012E13F /* Assets.xcassets */; };
 		565C45361F83FD320012E13F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 565C45341F83FD320012E13F /* LaunchScreen.storyboard */; };
+		5667E67F1FD5E3B400ADA154 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5667E67E1FD5E3B400ADA154 /* Colors.swift */; };
+		5667E6851FD6DF6B00ADA154 /* ViewTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5667E6841FD6DF6B00ADA154 /* ViewTextViewController.swift */; };
+		5667E6881FD6F14100ADA154 /* FeatureState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5667E6871FD6F14100ADA154 /* FeatureState.swift */; };
 		567B52C71FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B52C61FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift */; };
 		567B52CC1FBA8D72006CDB21 /* ARKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B52CB1FBA8D72006CDB21 /* ARKitHelper.swift */; };
 		568CC6771FAFE93C00393411 /* ImageCaptureBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568CC6761FAFE93C00393411 /* ImageCaptureBlock.swift */; };
@@ -91,6 +94,9 @@
 		565C45321F83FD320012E13F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		565C45351F83FD320012E13F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		565C45371F83FD320012E13F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5667E67E1FD5E3B400ADA154 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		5667E6841FD6DF6B00ADA154 /* ViewTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTextViewController.swift; sourceTree = "<group>"; };
+		5667E6871FD6F14100ADA154 /* FeatureState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureState.swift; sourceTree = "<group>"; };
 		567B52C61FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TesseractDimensionsHelper.swift; sourceTree = "<group>"; };
 		567B52CB1FBA8D72006CDB21 /* ARKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARKitHelper.swift; sourceTree = "<group>"; };
 		568CC6761FAFE93C00393411 /* ImageCaptureBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCaptureBlock.swift; sourceTree = "<group>"; };
@@ -141,6 +147,8 @@
 		565C45281F83FD320012E13F /* DyslexiBye */ = {
 			isa = PBXGroup;
 			children = (
+				5667E6861FD6F12900ADA154 /* CustomValues */,
+				5667E6831FD6DF5200ADA154 /* Views */,
 				56C457281FCD1292005DDDBE /* Resources */,
 				56B753A51FA6719900BFEE7F /* VisualElements */,
 				56164C8B1F93E9B100B693F9 /* tessdata */,
@@ -156,8 +164,25 @@
 				568CC6781FAFF8D800393411 /* CropImage.swift */,
 				567B52C61FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift */,
 				567B52CB1FBA8D72006CDB21 /* ARKitHelper.swift */,
+				5667E67E1FD5E3B400ADA154 /* Colors.swift */,
 			);
 			path = DyslexiBye;
+			sourceTree = "<group>";
+		};
+		5667E6831FD6DF5200ADA154 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5667E6841FD6DF6B00ADA154 /* ViewTextViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5667E6861FD6F12900ADA154 /* CustomValues */ = {
+			isa = PBXGroup;
+			children = (
+				5667E6871FD6F14100ADA154 /* FeatureState.swift */,
+			);
+			path = CustomValues;
 			sourceTree = "<group>";
 		};
 		56B753A51FA6719900BFEE7F /* VisualElements */ = {
@@ -381,8 +406,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				565C452E1F83FD320012E13F /* ViewController.swift in Sources */,
+				5667E67F1FD5E3B400ADA154 /* Colors.swift in Sources */,
 				56164C881F93D7D800B693F9 /* TestViewController.swift in Sources */,
 				565C452A1F83FD320012E13F /* AppDelegate.swift in Sources */,
+				5667E6881FD6F14100ADA154 /* FeatureState.swift in Sources */,
+				5667E6851FD6DF6B00ADA154 /* ViewTextViewController.swift in Sources */,
 				568CC6791FAFF8D800393411 /* CropImage.swift in Sources */,
 				567B52C71FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift in Sources */,
 				56B753AA1FA6720700BFEE7F /* FocusAnimationBlock.swift in Sources */,
