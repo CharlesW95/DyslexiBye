@@ -10,6 +10,9 @@
 		49470E577D203570A43F857C /* Pods_DyslexiBye.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FBA26BCB22443E3A35C21AB /* Pods_DyslexiBye.framework */; };
 		56164C881F93D7D800B693F9 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56164C871F93D7D800B693F9 /* TestViewController.swift */; };
 		56164C8C1F93E9B100B693F9 /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 56164C8B1F93E9B100B693F9 /* tessdata */; };
+		561AA2B71FDC4A2000A93C64 /* InformationText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561AA2B61FDC4A2000A93C64 /* InformationText.swift */; };
+		561AA2B91FDDA4CA00A93C64 /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561AA2B81FDDA4CA00A93C64 /* TutorialPageViewController.swift */; };
+		561AA2BC1FDDA6AC00A93C64 /* TutorialContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561AA2BB1FDDA6AC00A93C64 /* TutorialContentViewController.swift */; };
 		565C452A1F83FD320012E13F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565C45291F83FD320012E13F /* AppDelegate.swift */; };
 		565C452C1F83FD320012E13F /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 565C452B1F83FD320012E13F /* art.scnassets */; };
 		565C452E1F83FD320012E13F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565C452D1F83FD320012E13F /* ViewController.swift */; };
@@ -19,6 +22,7 @@
 		5667E67F1FD5E3B400ADA154 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5667E67E1FD5E3B400ADA154 /* Colors.swift */; };
 		5667E6851FD6DF6B00ADA154 /* ViewTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5667E6841FD6DF6B00ADA154 /* ViewTextViewController.swift */; };
 		5667E6881FD6F14100ADA154 /* FeatureState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5667E6871FD6F14100ADA154 /* FeatureState.swift */; };
+		5667E68A1FD6F53A00ADA154 /* FeatureStateIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5667E6891FD6F53A00ADA154 /* FeatureStateIndicator.swift */; };
 		567B52C71FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B52C61FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift */; };
 		567B52CC1FBA8D72006CDB21 /* ARKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B52CB1FBA8D72006CDB21 /* ARKitHelper.swift */; };
 		568CC6771FAFE93C00393411 /* ImageCaptureBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568CC6761FAFE93C00393411 /* ImageCaptureBlock.swift */; };
@@ -86,6 +90,9 @@
 		560761201F8D064E007A4821 /* libTesseractOCRiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libTesseractOCRiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		56164C871F93D7D800B693F9 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		56164C8B1F93E9B100B693F9 /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
+		561AA2B61FDC4A2000A93C64 /* InformationText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationText.swift; sourceTree = "<group>"; };
+		561AA2B81FDDA4CA00A93C64 /* TutorialPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageViewController.swift; sourceTree = "<group>"; };
+		561AA2BB1FDDA6AC00A93C64 /* TutorialContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialContentViewController.swift; sourceTree = "<group>"; };
 		565C45261F83FD320012E13F /* DyslexiBye.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DyslexiBye.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		565C45291F83FD320012E13F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		565C452B1F83FD320012E13F /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -97,6 +104,7 @@
 		5667E67E1FD5E3B400ADA154 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		5667E6841FD6DF6B00ADA154 /* ViewTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTextViewController.swift; sourceTree = "<group>"; };
 		5667E6871FD6F14100ADA154 /* FeatureState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureState.swift; sourceTree = "<group>"; };
+		5667E6891FD6F53A00ADA154 /* FeatureStateIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureStateIndicator.swift; sourceTree = "<group>"; };
 		567B52C61FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TesseractDimensionsHelper.swift; sourceTree = "<group>"; };
 		567B52CB1FBA8D72006CDB21 /* ARKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARKitHelper.swift; sourceTree = "<group>"; };
 		568CC6761FAFE93C00393411 /* ImageCaptureBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCaptureBlock.swift; sourceTree = "<group>"; };
@@ -125,6 +133,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		561AA2BA1FDDA4DB00A93C64 /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				561AA2B81FDDA4CA00A93C64 /* TutorialPageViewController.swift */,
+				561AA2BB1FDDA6AC00A93C64 /* TutorialContentViewController.swift */,
+			);
+			path = Tutorial;
+			sourceTree = "<group>";
+		};
 		565C451D1F83FD320012E13F = {
 			isa = PBXGroup;
 			children = (
@@ -164,7 +181,6 @@
 				568CC6781FAFF8D800393411 /* CropImage.swift */,
 				567B52C61FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift */,
 				567B52CB1FBA8D72006CDB21 /* ARKitHelper.swift */,
-				5667E67E1FD5E3B400ADA154 /* Colors.swift */,
 			);
 			path = DyslexiBye;
 			sourceTree = "<group>";
@@ -172,6 +188,7 @@
 		5667E6831FD6DF5200ADA154 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				561AA2BA1FDDA4DB00A93C64 /* Tutorial */,
 				5667E6841FD6DF6B00ADA154 /* ViewTextViewController.swift */,
 			);
 			path = Views;
@@ -181,6 +198,8 @@
 			isa = PBXGroup;
 			children = (
 				5667E6871FD6F14100ADA154 /* FeatureState.swift */,
+				5667E67E1FD5E3B400ADA154 /* Colors.swift */,
+				561AA2B61FDC4A2000A93C64 /* InformationText.swift */,
 			);
 			path = CustomValues;
 			sourceTree = "<group>";
@@ -190,6 +209,7 @@
 			children = (
 				56B753A91FA6720700BFEE7F /* FocusAnimationBlock.swift */,
 				568CC6761FAFE93C00393411 /* ImageCaptureBlock.swift */,
+				5667E6891FD6F53A00ADA154 /* FeatureStateIndicator.swift */,
 			);
 			path = VisualElements;
 			sourceTree = "<group>";
@@ -407,9 +427,13 @@
 			files = (
 				565C452E1F83FD320012E13F /* ViewController.swift in Sources */,
 				5667E67F1FD5E3B400ADA154 /* Colors.swift in Sources */,
+				561AA2B91FDDA4CA00A93C64 /* TutorialPageViewController.swift in Sources */,
 				56164C881F93D7D800B693F9 /* TestViewController.swift in Sources */,
 				565C452A1F83FD320012E13F /* AppDelegate.swift in Sources */,
+				561AA2B71FDC4A2000A93C64 /* InformationText.swift in Sources */,
+				5667E68A1FD6F53A00ADA154 /* FeatureStateIndicator.swift in Sources */,
 				5667E6881FD6F14100ADA154 /* FeatureState.swift in Sources */,
+				561AA2BC1FDDA6AC00A93C64 /* TutorialContentViewController.swift in Sources */,
 				5667E6851FD6DF6B00ADA154 /* ViewTextViewController.swift in Sources */,
 				568CC6791FAFF8D800393411 /* CropImage.swift in Sources */,
 				567B52C71FBA8AF9006CDB21 /* TesseractDimensionsHelper.swift in Sources */,

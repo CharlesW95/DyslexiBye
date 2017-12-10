@@ -22,8 +22,9 @@ class ImageCaptureBlock: UIView {
     }
     
     func configureAppearance() {
-        self.backgroundColor = UIColor.yellow
-        self.alpha = 0.25
+        self.layer.borderWidth = 4.0
+        self.layer.borderColor = UIColor.yellow.cgColor
+        self.backgroundColor = Colors.imageCaptureBackgroundYellow
     }
     
     func updateFrame(newPoint: CGPoint) {

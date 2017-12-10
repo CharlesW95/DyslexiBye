@@ -47,14 +47,21 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
     
     var latestPlaneCorners = [ARHitTestResult]()
     
-    @IBOutlet weak var displayImageView: UIImageView!
+    @IBOutlet weak var featureStateIndicator: FeatureStateIndicator!
+    
+    @IBAction func infoButtonTapped(_ sender: Any) {
+        // Segue to an information controller
+        self.performSegue(withIdentifier: "viewTextSegue", sender: InformationText.infoText)
+    }
+    
+    @IBAction func helpButtonTapped(_ sender: Any) {
+        self.performSegue(withIdentifier: "viewTutorialSegue", sender: nil)
+    }
     
     @IBAction func panGestureRecognized(_ sender: Any) {
         let sender = sender as! UIPanGestureRecognizer
         switch (sender.state) {
             case .began:
-//                print("This is the starting location")
-//                print(sender.location(in: self.view))
                 // Initialize the ImageCaptureBlock
                 self.imageCaptureBlock = ImageCaptureBlock(startingPoint: sender.location(in: self.view))
                 self.view.addSubview(self.imageCaptureBlock!)
@@ -203,14 +210,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         }
     }
     
-    var takePhotoCount = 0
-    // New take photo function uses AVCaptureSession
+    // New take photo function uses AVCaptureSefssion
     func takePhoto() {
         if let _ = stillImageOutput.connection(with: .video) {
             let photoSettings = AVCapturePhotoSettings()
             photoSettings.flashMode = .off
             stillImageOutput.capturePhoto(with: photoSettings, delegate: self)
-            takePhotoCount += 1
         }
     }
     
@@ -252,7 +257,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         let newCropRectangle = CGRect(x: self.cropRectangle.minY, y: screenWidth - self.cropRectangle.maxX, width: self.cropRectangle.height, height: self.cropRectangle.width)
         
         let croppedImage = preCroppedImage.crop(rect: newCropRectangle, scaleFactor: scaleFactor)
-        UIImageWriteToSavedPhotosAlbum(croppedImage, nil, nil, nil)
+        // UIImageWriteToSavedPhotosAlbum(croppedImage, nil, nil, nil)
         // Feed it into Tesseract and extract text
         tesseract.image = croppedImage
         tesseract.recognize()
@@ -276,7 +281,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         print("Recognition Complete")
         
         // Bring back sceneView
-        print(takePhotoCount)
         videoPreviewLayer.removeFromSuperlayer()
         videoPreviewLayer = nil
         captureSession.stopRunning()
@@ -293,21 +297,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
     }
     
     @objc func removeExtraViews() {
-        print("Removing extra views")
-        if let tv = self.tesseractTextView {
-            tv.removeFromSuperview()
-            self.tesseractTextView = nil
-        }
-        
-        if let topIV = self.originalImageView {
-            topIV.removeFromSuperview()
-            self.originalImageView = nil
-        }
-        
-        if let botIV = self.processedImageView {
-            botIV.removeFromSuperview()
-            self.processedImageView = nil
-        }
+        print("Removing all nodes")
+        arHelper.removeAllNodes()
     }
     
     
@@ -350,7 +341,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
         sceneView.delegate = self
         
         // Show statistics such as fps and timing information
-        sceneView.showsStatistics = true
+        // sceneView.showsStatistics = true
         
         self.arHelper = ARKitHelper(sceneView: sceneView)
         
@@ -394,11 +385,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
     
     func updateFeatureStateIndicator(state: FeatureState) {
         self.featureState = state
-        if state == .ready {
-            print("READY")
-        } else {
-            print("NOT READY")
-        }
+        self.featureStateIndicator.updateState(state: state)
     }
     
     

@@ -391,6 +391,14 @@ class ARKitHelper: NSObject {
         planeNode.addChildNode(textNode)
     }
     
+    func removeAllNodes() {
+        for node in self.planeNodes {
+            node.removeFromParentNode()
+        }
+        
+        self.planeNodes = Set<SCNNode>()
+    }
+    
     // Check if there are enough feature points
     func featurePointsReady() -> Bool {
         if let frame = self.sceneView.session.currentFrame {
