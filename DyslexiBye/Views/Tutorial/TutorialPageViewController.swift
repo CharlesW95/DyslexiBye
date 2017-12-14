@@ -11,7 +11,7 @@ import UIKit
 class TutorialPageViewController: UIPageViewController, UIPageViewControllerDataSource {
     
     // Content options
-    final let tutorialTexts = ["Wait for the calibration light to turn green.", "Draw a box around the text you'd like to capture, by dragging your finger across the screen.", "Wait for the results to appear!"]
+    final let tutorialTexts = ["Wait for the calibration light to turn green.", "Draw a box around the text you'd like to capture, by dragging your finger across the screen.", "Wait for the results to appear! Waiting for the calibration light to turn green again helps ensure the text stays in place."]
     final let imageNames = ["tutorial1", "tutorial2", "tutorial3"]
     
     override func viewDidLoad() {
@@ -51,7 +51,7 @@ class TutorialPageViewController: UIPageViewController, UIPageViewControllerData
     func getViewControllerAtIndex(index: Int) -> TutorialContentViewController {
         // Instantiate tutorial content
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "tutorialContentViewController") as! TutorialContentViewController
-        print(index)
+        vc.pageIndex = index
         vc.pageDescription = tutorialTexts[index]
         vc.imageName = imageNames[index]
         return vc

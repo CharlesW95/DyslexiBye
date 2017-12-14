@@ -65,6 +65,7 @@ class TutorialContentViewController: UIViewController {
     
     func setContent() {
         progressLabel.text = "\(pageIndex + 1) / 3"
+        tutorialImageView.image = UIImage(named: imageName)
         tutorialTextView.text = pageDescription
     }
 

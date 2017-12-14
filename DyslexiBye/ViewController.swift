@@ -305,12 +305,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, G8TesseractDelegate, 
     // Come back to improve on this later.
     func preprocessedImage(for tesseract: G8Tesseract!, sourceImage: UIImage!) -> UIImage! {
         // Process photo for Tesseract
+        
+        UIImageWriteToSavedPhotosAlbum(sourceImage, nil, nil, nil)
+        
         let stillImageFilter = AdaptiveThreshold()
         stillImageFilter.blurRadiusInPixels = 2.0
         var processedImage = sourceImage.filterWithPipeline { input, output in
             input --> stillImageFilter --> output
         }
         processedImage = UIImage(cgImage: processedImage.cgImage!, scale: 1.0, orientation: sourceImage.imageOrientation)
+        UIImageWriteToSavedPhotosAlbum(processedImage, nil, nil, nil)
         
         return processedImage
     }
